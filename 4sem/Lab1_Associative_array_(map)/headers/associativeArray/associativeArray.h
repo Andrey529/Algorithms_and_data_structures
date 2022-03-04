@@ -17,10 +17,16 @@ public:
 
     void insert(T_key key, T_value value); // добавление элемента с ключом и значением
     void remove(T_key key); // удаление элемента по ключу
+
+    // посмотреть как возвращать умный указатель на элемента, чтобы элемент нельзя было изменять
     std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
+
     void clear(); // очищение ассоциативного массива
+
+
     std::unique_ptr<T_key[]> get_keys(); // возвращает список ключей
     std::unique_ptr<T_value[]> get_values(); // возвращает список значений
+
     void print(); // вывод в консоль
 };
 
