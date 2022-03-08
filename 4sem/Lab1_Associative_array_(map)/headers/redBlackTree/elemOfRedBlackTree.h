@@ -6,7 +6,6 @@
 #include "../dataPair/dataPair.h"
 
 enum class COLOR{
-    NO_COLOR,
     BLACK,
     RED,
 };

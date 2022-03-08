@@ -8,12 +8,11 @@ elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(const T_key &key, const T
                                                        std::shared_ptr<elemOfRedBlackTree> parent,
                                                        std::shared_ptr<elemOfRedBlackTree> nextLeft,
                                                        std::shared_ptr<elemOfRedBlackTree> nextRight) {
-    if (color == COLOR::NO_COLOR) throw std::invalid_argument("Incorrect color");
     try {
         this->data = std::make_unique<dataPair<T_key, T_value>>(key, value);
     }
-    catch (const std::bad_alloc &e) {
-        std::cout << e.what();
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
     }
     this->color = color;
     this->parent = std::move(parent);
@@ -28,7 +27,7 @@ elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(std::shared_ptr<elemOfRed
     if (parent) this->parent = std::move(parent);
     else this->parent = nullptr;
 
-    this->color = COLOR::NO_COLOR;
+    this->color = COLOR::BLACK;
     this->nextLeft = nullptr;
     this->nextRight = nullptr;
 }
