@@ -3,24 +3,25 @@
 
 #include "elemOfRedBlackTree.h"
 
-
-template<class T_key, class T_value>
+template<class T_key, class T_value, class comparator = std::less<T_key>>
 class redBlackTree{
 private:
-    std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> head;
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head;
 public:
-    redBlackTree(T_key key, T_value value);
-    redBlackTree(std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> head = nullptr);
-
+    redBlackTree(const T_key &key, const T_value &value);
+    redBlackTree() : head(nullptr) {}
     ~redBlackTree() = default;
 
-    void insert(T_key key, T_value value); // добавление элемента с ключом и значением
-    void remove(T_key key); // удаление элемента по ключу
-    std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
-    void clear(); // очищение ассоциативного массива
-    std::unique_ptr<T_key[]> get_keys(); // возвращает список ключей
-    std::unique_ptr<T_value[]> get_values(); // возвращает список значений
-    void print(); // вывод в консоль
+    bool isEmpty() const;
+    void insert(const T_key &key, const T_value &value); // добавление элемента с ключом и значением
+
+
+//    void remove(T_key key); // удаление элемента по ключу
+//    const std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
+//    void clear(); // очищение ассоциативного массива
+//    std::unique_ptr<T_key[]> get_keys(); // возвращает список ключей
+//    std::unique_ptr<T_value[]> get_values(); // возвращает список значений
+//    void print(); // вывод в консоль
 
 };
 
