@@ -3,8 +3,10 @@
 
 #include <memory>
 #include <iostream>
+#include "../dataPair/dataPair.h"
 
 enum class COLOR{
+    NO_COLOR,
     BLACK,
     RED,
 };
@@ -12,45 +14,37 @@ enum class COLOR{
 template<class T_key, class T_value>
 class elemOfRedBlackTree{
 private:
-
-    class dataPair{
-    public:
-        T_key key;
-        T_value value;
-        COLOR color;
-        dataPair(T_key key, T_value value, COLOR color) : key(key), value(value), color(color) {}
-        ~dataPair() = default;
-    };
-
-    std::unique_ptr<dataPair> data;
-    std::unique_ptr<elemOfRedBlackTree> parent;
-    std::unique_ptr<elemOfRedBlackTree> nextLeft;
-    std::unique_ptr<elemOfRedBlackTree> nextRight;
+    COLOR color;
+    std::unique_ptr<dataPair<T_key, T_value>> data;
+    std::shared_ptr<elemOfRedBlackTree> parent;
+    std::shared_ptr<elemOfRedBlackTree> nextLeft;
+    std::shared_ptr<elemOfRedBlackTree> nextRight;
 public:
-    elemOfRedBlackTree(T_key key, T_value value, COLOR color,   // default constructor
-                       std::unique_ptr<elemOfRedBlackTree> parent = nullptr,
-                       std::unique_ptr<elemOfRedBlackTree> nextLeft = nullptr,
-                       std::unique_ptr<elemOfRedBlackTree> nextRight = nullptr);
-    elemOfRedBlackTree(std::unique_ptr<elemOfRedBlackTree> parent = nullptr);   //constructor for nils
+
+    elemOfRedBlackTree(const T_key &key, const T_value &value, const COLOR &color,   // default constructor
+                       std::shared_ptr<elemOfRedBlackTree> parent = nullptr,
+                       std::shared_ptr<elemOfRedBlackTree> nextLeft = nullptr,
+                       std::shared_ptr<elemOfRedBlackTree> nextRight = nullptr);
+
+    elemOfRedBlackTree(std::shared_ptr<elemOfRedBlackTree> parent = nullptr);   //constructor for nils
     ~elemOfRedBlackTree() = default;
 
     T_key getKey() const;
-    void setKey(T_key key);
 
     T_value getValue() const;
-    void setValue(T_value value);
+    void setValue(const T_value &value);
 
     COLOR getColor() const;
-    void setColor(COLOR color);
+    void setColor(const COLOR &color);
 
-    std::unique_ptr<elemOfRedBlackTree> getParent() const;
-    void setParent(std::unique_ptr<elemOfRedBlackTree> parent);
+    std::shared_ptr<elemOfRedBlackTree> getParent() const;
+    void setParent(std::shared_ptr<elemOfRedBlackTree> parent);
 
-    std::unique_ptr<elemOfRedBlackTree> getNextLeft() const;
-    void setNextLeft(std::unique_ptr<elemOfRedBlackTree> nextLeft);
+    std::shared_ptr<elemOfRedBlackTree> getNextLeft() const;
+    void setNextLeft(std::shared_ptr<elemOfRedBlackTree> nextLeft);
 
-    std::unique_ptr<elemOfRedBlackTree> getNextRight() const;
-    void setNextRight(std::unique_ptr<elemOfRedBlackTree> nextRight);
+    std::shared_ptr<elemOfRedBlackTree> getNextRight() const;
+    void setNextRight(std::shared_ptr<elemOfRedBlackTree> nextRight);
 
 };
 
