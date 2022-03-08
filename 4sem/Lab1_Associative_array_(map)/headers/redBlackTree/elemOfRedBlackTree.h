@@ -45,6 +45,7 @@ public:
     std::shared_ptr<elemOfRedBlackTree> getNextRight() const;
     void setNextRight(std::shared_ptr<elemOfRedBlackTree> nextRight);
 
+    bool isNil() const;
 };
 
 #include "../../src/redBlackTree/elemOfRedBlackTree.cpp"

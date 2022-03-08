@@ -102,7 +102,10 @@ void elemOfRedBlackTree<T_key, T_value>::setNextRight(std::shared_ptr<elemOfRedB
     this->nextRight = nextRight;
 }
 
-
+template<class T_key, class T_value>
+bool elemOfRedBlackTree<T_key, T_value>::isNil() const {
+    return this->data == nullptr;
+}
 
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__ELEMOFREDBLACKTREE_CPP
