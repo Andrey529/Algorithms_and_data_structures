@@ -5,30 +5,38 @@
 #include <map>
 
 int main() {
-    auto elem = std::make_shared<elemOfRedBlackTree<int, int>>(7, 7, COLOR::BLACK);
-    auto parent = std::make_shared<elemOfRedBlackTree<int, int>>(10, 10, COLOR::BLACK);
-    auto childLeft = std::make_shared<elemOfRedBlackTree<int, int>>(5, 5, COLOR::BLACK);
-    auto childRight = std::make_shared<elemOfRedBlackTree<int, int>>(8, 8, COLOR::BLACK);
 
-    elem->setParent(std::move(parent));
-    elem->setNextLeft(childLeft);
-    elem->setNextRight(childRight);
-
-
-    std::shared_ptr<elemOfRedBlackTree<int, int>> elemParent = elem->getParent();
-    std::shared_ptr<elemOfRedBlackTree<int, int>> elemRight = elem->getNextRight();
-
-    std::cout << "Const return" << std::endl;
-    std::cout << elem->getParent()->getValue() << ' ' << elemParent->getValue() << std::endl;
-    elemParent = std::make_shared<elemOfRedBlackTree<int, int>>(54, 54, COLOR::BLACK);
-    std::cout << elem->getParent()->getValue() << ' ' << elemParent->getValue() << std::endl;
-
-    std::cout << "Non-const return" << std::endl;
-    std::cout << elem->getNextRight()->getValue() << ' ' << elemRight->getValue() << std::endl;
-    elemRight = std::make_shared<elemOfRedBlackTree<int, int>>(61, 61, COLOR::BLACK);
-    std::cout << elem->getNextRight()->getValue() << ' ' << elemRight->getValue() << std::endl;
+//    auto tree = std::make_unique<redBlackTree<int, int>>(10, 10);
+    redBlackTree<int, int> tree(10, 10);
+    tree.insert(13, 13);
+    tree.insert(8, 8);
+    tree.insert(5, 5);
+    tree.insert(17, 17);
+    tree.insert(12, 12);
 
 
+//    auto elem = std::make_shared<elemOfRedBlackTree<int, int>>(7, 7, COLOR::BLACK);
+//    auto parent = std::make_shared<elemOfRedBlackTree<int, int>>(10, 10, COLOR::BLACK);
+//    auto childLeft = std::make_shared<elemOfRedBlackTree<int, int>>(5, 5, COLOR::BLACK);
+//    auto childRight = std::make_shared<elemOfRedBlackTree<int, int>>(8, 8, COLOR::BLACK);
+//
+//    elem->setParent(std::move(parent));
+//    elem->setNextLeft(childLeft);
+//    elem->setNextRight(childRight);
+//
+//
+//    std::shared_ptr<elemOfRedBlackTree<int, int>> elemParent = elem->getParent();
+//    std::shared_ptr<elemOfRedBlackTree<int, int>> elemRight = elem->getNextRight();
+//
+//    std::cout << "Const return" << std::endl;
+//    std::cout << elem->getParent()->getValue() << ' ' << elemParent->getValue() << std::endl;
+//    elemParent = std::make_shared<elemOfRedBlackTree<int, int>>(54, 54, COLOR::BLACK);
+//    std::cout << elem->getParent()->getValue() << ' ' << elemParent->getValue() << std::endl;
+//
+//    std::cout << "Non-const return" << std::endl;
+//    std::cout << elem->getNextRight()->getValue() << ' ' << elemRight->getValue() << std::endl;
+//    elemRight = std::make_shared<elemOfRedBlackTree<int, int>>(61, 61, COLOR::BLACK);
+//    std::cout << elem->getNextRight()->getValue() << ' ' << elemRight->getValue() << std::endl;
 
 //    std::cout << "parent value = " << elem->getParent()->getValue() << std::endl;
 //    std::cout << "nextLeft value = " << elem->getNextLeft()->getValue() << std::endl;
