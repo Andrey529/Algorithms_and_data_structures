@@ -15,16 +15,16 @@ elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(const T_key &key, const T
         std::cout << error.what();
     }
     this->color = color;
-    this->parent = std::move(parent);
-    this->nextLeft = std::move(nextLeft);
-    this->nextRight = std::move(nextRight);
+    this->parent = parent;
+    this->nextLeft = nextLeft;
+    this->nextRight = nextRight;
 }
 
 template<class T_key, class T_value>
 elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(std::shared_ptr<elemOfRedBlackTree> parent) {
     this->data = nullptr;
 
-    if (parent) this->parent = std::move(parent);
+    if (parent) this->parent = parent;
     else this->parent = nullptr;
 
     this->color = COLOR::BLACK;
