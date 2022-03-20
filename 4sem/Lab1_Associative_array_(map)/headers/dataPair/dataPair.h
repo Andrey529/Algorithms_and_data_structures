@@ -4,18 +4,18 @@
 template<class T_first, class T_second>
 class dataPair{
 private:
-    T_first first;
-    T_second second;
+    T_first first_;
+    T_second second_;
 public:
-    dataPair() : first(), second() { }
+    dataPair() : first_(), second_() { }
 
-    dataPair(const T_first  &first, const T_second &second) : first(first), second(second) { }
-    dataPair(T_first &&first, T_second &&second) : first(std::move(first)), second(std::move(second)) { }
-    dataPair(const T_first &first, T_second &&second) : first(first), second(std::move(second)) { }
-    dataPair(T_first &&first, const T_second &second) : first(std::move(first)), second(second) { }
+    dataPair(const T_first  &first, const T_second &second) : first_(first), second_(second) { }
+    dataPair(T_first &&first, T_second &&second) : first_(std::move(first)), second_(std::move(second)) { }
+    dataPair(const T_first &first, T_second &&second) : first_(first), second_(std::move(second)) { }
+    dataPair(T_first &&first, const T_second &second) : first_(std::move(first)), second_(second) { }
 
-    dataPair(const dataPair<T_first, T_second> &pair) : first(pair.first), second(pair.second) { }
-    dataPair(dataPair<T_first, T_second> &&pair)  noexcept : first(std::move(pair.first)), second(std::move(pair.second)) { }
+    dataPair(const dataPair<T_first, T_second> &pair) : first_(pair.first), second_(pair.second) { }
+    dataPair(dataPair<T_first, T_second> &&pair)  noexcept : first_(std::move(pair.first)), second_(std::move(pair.second)) { }
     ~dataPair() = default;
 
     dataPair& operator=(const dataPair<T_first, T_second> &other);
@@ -31,45 +31,51 @@ public:
 
 template<class T_first, class T_second>
 T_first dataPair<T_first, T_second>::getFirst() const {
-    return this->first;
+    return first_;
 }
 
 template<class T_first, class T_second>
 void dataPair<T_first, T_second>::setFirst(const T_first &first) {
-    this->first = first;
+    first_ = first;
 }
 
 template<class T_first, class T_second>
 void dataPair<T_first, T_second>::setFirst(T_first &&first) {
-    this->first = std::move(first);
+    first_ = std::move(first);
 }
 
 template<class T_first, class T_second>
 T_second dataPair<T_first, T_second>::getSecond() const {
-    return this->second;
+    return second_;
 }
 
 template<class T_first, class T_second>
 void dataPair<T_first, T_second>::setSecond(const T_second &second) {
-    this->second = second;
+    second_ = second;
 }
 
 template<class T_first, class T_second>
 void dataPair<T_first, T_second>::setSecond(T_second &&second) {
-    this->second = std::move(second);
+    second_ = std::move(second);
 }
 
 template<class T_first, class T_second>
 dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(const dataPair<T_first, T_second> &other) {
-    this->first = other.first;
-    this->second = other.second;
+    if (this == &other) {
+        return *this;
+    }
+    first_ = other.first;
+    second_ = other.second;
     return *this;
 }
 
 template<class T_first, class T_second>
 dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(dataPair<T_first, T_second> &&other) noexcept {
-    this->first = std::move(other.first);
-    this->second = std::move(other.second);
+    if (this == &other) {
+        return *this;
+    }
+    first_ = std::move(other.first);
+    second_ = std::move(other.second);
     return *this;
 }
 
