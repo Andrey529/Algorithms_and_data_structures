@@ -15,17 +15,17 @@ class elemOfRedBlackTree{
 private:
     COLOR color;
     std::unique_ptr<dataPair<T_key, T_value>> data;
-    std::shared_ptr<elemOfRedBlackTree> parent;
+    std::weak_ptr<elemOfRedBlackTree> parent;
     std::shared_ptr<elemOfRedBlackTree> nextLeft;
     std::shared_ptr<elemOfRedBlackTree> nextRight;
 public:
 
     elemOfRedBlackTree(const T_key &key, const T_value &value, const COLOR &color,   // default constructor
-                       std::shared_ptr<elemOfRedBlackTree> parent = nullptr,
+                       std::weak_ptr<elemOfRedBlackTree> parent = {},
                        std::shared_ptr<elemOfRedBlackTree> nextLeft = nullptr,
                        std::shared_ptr<elemOfRedBlackTree> nextRight = nullptr);
 
-    elemOfRedBlackTree(std::shared_ptr<elemOfRedBlackTree> parent = nullptr);   //constructor for nils
+    elemOfRedBlackTree(std::weak_ptr<elemOfRedBlackTree> parent = {});   //constructor for nils
     ~elemOfRedBlackTree() = default;
 
     T_key getKey() const;

@@ -5,7 +5,7 @@
 
 template<class T_key, class T_value>
 elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(const T_key &key, const T_value &value, const COLOR &color,
-                                                       std::shared_ptr<elemOfRedBlackTree> parent,
+                                                       std::weak_ptr<elemOfRedBlackTree> parent,
                                                        std::shared_ptr<elemOfRedBlackTree> nextLeft,
                                                        std::shared_ptr<elemOfRedBlackTree> nextRight) {
     try {
@@ -21,11 +21,10 @@ elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(const T_key &key, const T
 }
 
 template<class T_key, class T_value>
-elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(std::shared_ptr<elemOfRedBlackTree> parent) {
+elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(std::weak_ptr<elemOfRedBlackTree> parent) {
     this->data = nullptr;
 
-    if (parent) this->parent = parent;
-    else this->parent = nullptr;
+    this->parent = parent;
 
     this->color = COLOR::BLACK;
     this->nextLeft = nullptr;

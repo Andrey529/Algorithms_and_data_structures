@@ -12,11 +12,8 @@ redBlackTree<T_key, T_value, comparator>::redBlackTree(const T_key &key,
         auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
         auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
 
-//        nilLeft->setParent(this->head);
-//        nilRight->setParent(this->head);
         this->head->setNextLeft(std::move(nilLeft));
         this->head->setNextRight(std::move(nilRight));
-
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
