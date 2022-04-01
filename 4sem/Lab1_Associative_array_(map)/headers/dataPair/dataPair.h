@@ -18,19 +18,27 @@ public:
     dataPair(dataPair<T_first, T_second> &&pair)  noexcept : first_(std::move(pair.first)), second_(std::move(pair.second)) { }
     ~dataPair() = default;
 
-    dataPair& operator=(const dataPair<T_first, T_second> &other);
-    dataPair& operator=(dataPair<T_first, T_second> &&other) noexcept ;
+    dataPair& operator=(const dataPair<T_first, T_second> &other) & ;
+    dataPair& operator=(dataPair<T_first, T_second> &&other) & noexcept;
 
-    T_first getFirst() const;
+    const T_first& getFirst() const;
+    T_first& getFirst();
     void setFirst(const T_first &first);
     void setFirst(T_first &&first);
-    T_second getSecond() const;
+
+    const T_second& getSecond() const;
+    T_second& getSecond();
     void setSecond(const T_second &second);
     void setSecond(T_second &&second);
 };
 
 template<class T_first, class T_second>
-T_first dataPair<T_first, T_second>::getFirst() const {
+const T_first& dataPair<T_first, T_second>::getFirst() const {
+    return first_;
+}
+
+template<class T_first, class T_second>
+T_first &dataPair<T_first, T_second>::getFirst() {
     return first_;
 }
 
@@ -45,7 +53,12 @@ void dataPair<T_first, T_second>::setFirst(T_first &&first) {
 }
 
 template<class T_first, class T_second>
-T_second dataPair<T_first, T_second>::getSecond() const {
+const T_second& dataPair<T_first, T_second>::getSecond() const {
+    return second_;
+}
+
+template<class T_first, class T_second>
+T_second& dataPair<T_first, T_second>::getSecond() {
     return second_;
 }
 
@@ -60,7 +73,7 @@ void dataPair<T_first, T_second>::setSecond(T_second &&second) {
 }
 
 template<class T_first, class T_second>
-dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(const dataPair<T_first, T_second> &other) {
+dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(const dataPair<T_first, T_second> &other) & {
     if (this == &other) {
         return *this;
     }
@@ -70,7 +83,7 @@ dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(const dataPa
 }
 
 template<class T_first, class T_second>
-dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(dataPair<T_first, T_second> &&other) noexcept {
+dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(dataPair<T_first, T_second> &&other) & noexcept {
     if (this == &other) {
         return *this;
     }
@@ -78,11 +91,5 @@ dataPair<T_first, T_second> &dataPair<T_first, T_second>::operator=(dataPair<T_f
     second_ = std::move(other.second);
     return *this;
 }
-
-//template<class T_key, class T_data>
-//class mapDataPair : public dataPair<const T_key, T_data> {
-//public:
-
-//};
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__DATAPAIR_H
