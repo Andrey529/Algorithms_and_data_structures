@@ -5,19 +5,19 @@
 #include <iostream>
 #include "../dataPair/dataPair.h"
 
-enum class COLOR{
+enum class COLOR {
     BLACK,
     RED,
 };
 
 template<class T_key, class T_value>
-class elemOfRedBlackTree{
+class elemOfRedBlackTree : public std::enable_shared_from_this<elemOfRedBlackTree<T_key, T_value>> {
 private:
-    COLOR color;
-    std::unique_ptr<dataPair<T_key, T_value>> data;
-    std::weak_ptr<elemOfRedBlackTree> parent;
-    std::shared_ptr<elemOfRedBlackTree> nextLeft;
-    std::shared_ptr<elemOfRedBlackTree> nextRight;
+    COLOR color_;
+    std::unique_ptr<dataPair<T_key, T_value>> data_;
+    std::weak_ptr<elemOfRedBlackTree> parent_;
+    std::shared_ptr<elemOfRedBlackTree> nextLeft_;
+    std::shared_ptr<elemOfRedBlackTree> nextRight_;
 public:
 
     elemOfRedBlackTree(const T_key &key, const T_value &value, const COLOR &color,   // default constructor
@@ -25,15 +25,19 @@ public:
                        std::shared_ptr<elemOfRedBlackTree> nextLeft = nullptr,
                        std::shared_ptr<elemOfRedBlackTree> nextRight = nullptr);
 
-    elemOfRedBlackTree(std::weak_ptr<elemOfRedBlackTree> parent = {});   //constructor for nils
+    explicit elemOfRedBlackTree(std::weak_ptr<elemOfRedBlackTree> parent = {});   //constructor for nils
     ~elemOfRedBlackTree() = default;
 
-    T_key getKey() const;
+    const T_key &getKey() const;
+    T_key &getKey();
 
-    T_value getValue() const;
+    const T_value &getValue() const;
+    T_value &getValue();
     void setValue(const T_value &value);
+    void setValue(T_value &&value);
 
-    COLOR getColor() const;
+    const COLOR &getColor() const;
+    COLOR &getColor();
     void setColor(const COLOR &color);
 
     std::shared_ptr<elemOfRedBlackTree> getParent() const;

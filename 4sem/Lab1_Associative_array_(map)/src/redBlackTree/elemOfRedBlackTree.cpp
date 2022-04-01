@@ -9,101 +9,133 @@ elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(const T_key &key, const T
                                                        std::shared_ptr<elemOfRedBlackTree> nextLeft,
                                                        std::shared_ptr<elemOfRedBlackTree> nextRight) {
     try {
-        this->data = std::make_unique<dataPair<T_key, T_value>>(key, value);
+        data_ = std::make_unique<dataPair<T_key, T_value>>(key, value);
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
     }
-    this->color = color;
-    this->parent = parent;
-    this->nextLeft = nextLeft;
-    this->nextRight = nextRight;
+    color_ = color;
+    parent_ = parent;
+    nextLeft_ = nextLeft;
+    nextRight_ = nextRight;
 }
 
 template<class T_key, class T_value>
 elemOfRedBlackTree<T_key, T_value>::elemOfRedBlackTree(std::weak_ptr<elemOfRedBlackTree> parent) {
-    this->data = nullptr;
+    data_ = nullptr;
 
-    this->parent = parent;
+    parent_ = parent;
 
-    this->color = COLOR::BLACK;
-    this->nextLeft = nullptr;
-    this->nextRight = nullptr;
+    color_ = COLOR::BLACK;
+    nextLeft_ = nullptr;
+    nextRight_ = nullptr;
 }
 
 template<class T_key, class T_value>
-T_key elemOfRedBlackTree<T_key, T_value>::getKey() const{
+const T_key &elemOfRedBlackTree<T_key, T_value>::getKey() const {
     if (!this) throw std::logic_error("getKey(): Attempt to interact with a null pointer");
-    if (!(this->data)) throw std::logic_error("getKey(): Attempt to interact with nil");
-    return this->data->key;
+    if (!data_) throw std::logic_error("getKey(): Attempt to interact with nil");
+    return data_->getFirst();
 }
 
 template<class T_key, class T_value>
-T_value elemOfRedBlackTree<T_key, T_value>::getValue() const{
+T_key &elemOfRedBlackTree<T_key, T_value>::getKey() {
+    if (!this) throw std::logic_error("getKey(): Attempt to interact with a null pointer");
+    if (!data_) throw std::logic_error("getKey(): Attempt to interact with nil");
+    return data_->getFirst();
+}
+
+template<class T_key, class T_value>
+const T_value &elemOfRedBlackTree<T_key, T_value>::getValue() const {
     if (!this) throw std::logic_error("getValue(): Attempt to interact with a null pointer");
-    if (!(this->data)) throw std::logic_error("getValue(): Attempt to interact with nil");
-    return this->data->value;
+    if (!data_) throw std::logic_error("getValue(): Attempt to interact with nil");
+    return data_->getSecond();
+}
+
+template<class T_key, class T_value>
+T_value &elemOfRedBlackTree<T_key, T_value>::getValue() {
+    if (!this) throw std::logic_error("getValue(): Attempt to interact with a null pointer");
+    if (!data_) throw std::logic_error("getValue(): Attempt to interact with nil");
+    return data_->getSecond();
 }
 
 template<class T_key, class T_value>
 void elemOfRedBlackTree<T_key, T_value>::setValue(const T_value &value) {
     if (!this) throw std::logic_error("setValue(): Attempt to interact with a null pointer");
-    if (!(this->data)) throw std::logic_error("setValue(): Attempt to interact with nil");
-    this->data->value = value;
+    if (!data_) throw std::logic_error("setValue(): Attempt to interact with nil");
+    data_->setSecond(value);
 }
 
 template<class T_key, class T_value>
-COLOR elemOfRedBlackTree<T_key, T_value>::getColor() const{
+void elemOfRedBlackTree<T_key, T_value>::setValue(T_value &&value) {
+    if (!this) throw std::logic_error("setValue(): Attempt to interact with a null pointer");
+    if (!data_) throw std::logic_error("setValue(): Attempt to interact with nil");
+    data_->setSecond(std::move(value));
+}
+
+template<class T_key, class T_value>
+const COLOR &elemOfRedBlackTree<T_key, T_value>::getColor() const {
     if (!this) throw std::logic_error("getColor(): Attempt to interact with a null pointer");
-    return this->data->color;
+    return color_;
+}
+
+template<class T_key, class T_value>
+COLOR &elemOfRedBlackTree<T_key, T_value>::getColor() {
+    if (!this) throw std::logic_error("getColor(): Attempt to interact with a null pointer");
+    return color_;
 }
 
 template<class T_key, class T_value>
 void elemOfRedBlackTree<T_key, T_value>::setColor(const COLOR &color) {
     if (!this) throw std::logic_error("setColor(): Attempt to interact with a null pointer");
-    if (!(this->data)) throw std::logic_error("setColor(): Attempt to interact with nil");
-    this->data->color = color;
+    if (!data_) throw std::logic_error("setColor(): Attempt to interact with nil");
+    color_ = color;
 }
 
+
+
+
+
+
 template<class T_key, class T_value>
-std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getParent() const{
+std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getParent() const {
     if (!this) throw std::logic_error("getParent(): Attempt to interact with a null pointer");
-    return this->parent;
+    return parent_;
 }
 
 template<class T_key, class T_value>
 void elemOfRedBlackTree<T_key, T_value>::setParent(std::shared_ptr<elemOfRedBlackTree> parent) {
     if (!this) throw std::logic_error("setParent(): Attempt to interact with a null pointer");
-    this->parent = parent;
+    parent_ = parent;
 }
 
 template<class T_key, class T_value>
 std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getNextLeft() const {
     if (!this) throw std::logic_error("getNextLeft(): Attempt to interact with a null pointer");
-    return this->nextLeft;
+    return nextLeft_;
 }
 
 template<class T_key, class T_value>
 void elemOfRedBlackTree<T_key, T_value>::setNextLeft(std::shared_ptr<elemOfRedBlackTree> nextLeft) {
     if (!this) throw std::logic_error("setNextLeft(): Attempt to interact with a null pointer");
-    this->nextLeft = nextLeft;
+    nextLeft_ = nextLeft;
 }
 
 template<class T_key, class T_value>
 std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getNextRight() const {
     if (!this) throw std::logic_error("getNextRight(): Attempt to interact with a null pointer");
-    return this->nextRight;
+    return nextRight_;
 }
 
 template<class T_key, class T_value>
 void elemOfRedBlackTree<T_key, T_value>::setNextRight(std::shared_ptr<elemOfRedBlackTree> nextRight) {
     if (!this) throw std::logic_error("setNextRight(): Attempt to interact with a null pointer");
-    this->nextRight = nextRight;
+    nextRight_ = nextRight;
 }
 
 template<class T_key, class T_value>
 bool elemOfRedBlackTree<T_key, T_value>::isNil() const {
-    return this->data == nullptr;
+    return data_ == nullptr;
 }
 
 
