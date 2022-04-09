@@ -18,7 +18,7 @@ public:
 
 //    void remove(T_key key); // удаление элемента по ключу
 //    const std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
-//    void clear(); // очищение ассоциативного массива
+    void clear(); // очищение ассоциативного массива
 //    std::unique_ptr<T_key[]> get_keys(); // возвращает список ключей
 //    std::unique_ptr<T_value[]> get_values(); // возвращает список значений
 //    void print(); // вывод в консоль

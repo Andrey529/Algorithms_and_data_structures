@@ -113,5 +113,10 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
     }
 }
 
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::clear() {
+    head = nullptr;
+}
+
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_CPP
