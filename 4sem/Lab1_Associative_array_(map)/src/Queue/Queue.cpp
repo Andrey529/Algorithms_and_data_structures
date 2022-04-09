@@ -31,22 +31,23 @@ Queue<T>::Queue(T &&data) {
 template<class T>
 Queue<T>::Queue(const Queue<T> &queue) {
     try {
-        if(queue.isEmpty()) {
+        if (queue.isEmpty()) {
             head_ = nullptr;
             return;
+        } else {
+            head_ = std::make_shared<ElemOfQueue>(queue.head_->data_);
+
+            std::shared_ptr<ElemOfQueue> tempForNextElem = head_;
+            std::shared_ptr<ElemOfQueue> other = queue.head_->nextElem_;
+
+            while (other != nullptr) {
+                tempForNextElem->nextElem_ = std::make_shared<ElemOfQueue>(other->data_);
+
+                tempForNextElem = tempForNextElem->nextElem_;
+                other = other->nextElem_;
+            }
+            tempForNextElem->nextElem_ = nullptr;
         }
-        head_ = std::make_shared<ElemOfQueue>(queue.head_->data_);
-
-        std::shared_ptr<ElemOfQueue> tempForNextElem = head_;
-        std::shared_ptr<ElemOfQueue> other = queue.head_->nextElem_;
-
-        while (other != nullptr) {
-            tempForNextElem->nextElem_ = std::make_shared<ElemOfQueue>(other->data_);
-
-            tempForNextElem = tempForNextElem->nextElem_;
-            other = other->nextElem_;
-        }
-        tempForNextElem->nextElem_ = nullptr;
 
     }
     catch (const std::bad_alloc &error) {
@@ -64,14 +65,14 @@ void Queue<T>::push(const T &data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfQueue>(data);
-            return;
-        }
+        } else{
 
-        auto temp = head_;
-        while (temp->nextElem_ != nullptr) {
-            temp = temp->nextElem_;
+            auto temp = head_;
+            while (temp->nextElem_ != nullptr) {
+                temp = temp->nextElem_;
+            }
+            temp->nextElem_ = std::make_shared<ElemOfQueue>(data);
         }
-        temp->nextElem_ = std::make_shared<ElemOfQueue>(data);
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();

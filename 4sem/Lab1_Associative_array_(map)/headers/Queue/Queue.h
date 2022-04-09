@@ -13,8 +13,8 @@ private:
     struct ElemOfQueue{
         T data_;
         std::shared_ptr<ElemOfQueue> nextElem_;
-        explicit ElemOfQueue(const T& data) : data_(data) { }
-        explicit ElemOfQueue(T &&data) noexcept : data_(std::move(data)) { }
+        explicit ElemOfQueue(const T& data) : data_(data), nextElem_(nullptr) { }
+        explicit ElemOfQueue(T &&data) noexcept : data_(std::move(data)), nextElem_(nullptr) { }
     };
 
     std::shared_ptr<ElemOfQueue> head_;

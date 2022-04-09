@@ -32,6 +32,15 @@ TEST(Queue, constructorCopyFromAnother){
     ASSERT_EQ(queueTemp.getFront().lock()->data_ /*0*/, queue.getFront().lock()->data_);
 }
 
+TEST(Queue, constructorCopyFromAnotherEmpty){
+    Queue<int> queueTemp;
+
+    Queue<int> queue(queueTemp);
+    ASSERT_EQ(0, queue.getSize());
+    ASSERT_EQ(nullptr, queue.getBack().lock());
+    ASSERT_EQ(nullptr, queue.getFront().lock());
+}
+
 TEST(Queue, constructorMoveFromAnother){
     Queue<int> queueTemp;
     for (int i = 0; i < 5; ++i) {
@@ -44,6 +53,15 @@ TEST(Queue, constructorMoveFromAnother){
     ASSERT_EQ(0, queue.getFront().lock()->data_);
     ASSERT_EQ(nullptr, queueTemp.getFront().lock());
     ASSERT_EQ(nullptr, queueTemp.getBack().lock());
+}
+
+TEST(Queue, constructorMoveFromAnotherEmpty){
+    Queue<int> queueTemp;
+
+    Queue<int> queue(std::move(queueTemp));
+    ASSERT_EQ(0, queue.getSize());
+    ASSERT_EQ(nullptr, queue.getBack().lock());
+    ASSERT_EQ(nullptr, queue.getFront().lock());
 }
 
 TEST(Queue, pushCopy){
