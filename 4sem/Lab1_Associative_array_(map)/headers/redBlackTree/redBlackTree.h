@@ -2,6 +2,7 @@
 #define LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_H
 
 #include "elemOfRedBlackTree.h"
+#include "../iteretor/RedBlackTreeBreadthFirstTraverseIterator.h"
 
 template<class T_key, class T_value, class comparator = std::less<T_key>>
 class redBlackTree{
@@ -15,6 +16,7 @@ public:
     bool isEmpty() const;
     void insert(const T_key &key, const T_value &value); // добавление элемента с ключом и значением
 
+    iterator<elemOfRedBlackTree<T_key, T_value>> *create_dft_iterator();;
 
 //    void remove(T_key key); // удаление элемента по ключу
 //    const std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
