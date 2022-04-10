@@ -29,22 +29,21 @@ Queue<T>::Queue(T &&data) {
 }
 
 template<class T>
-Queue<T>::Queue(const Queue<T> &queue) {
+Queue<T>::Queue(const Queue<T> &other) {
     try {
-        if (queue.isEmpty()) {
+        if (other.isEmpty()) {
             head_ = nullptr;
-            return;
         } else {
-            head_ = std::make_shared<ElemOfQueue>(queue.head_->data_);
+            head_ = std::make_shared<ElemOfQueue>(other.head_->data_);
 
             std::shared_ptr<ElemOfQueue> tempForNextElem = head_;
-            std::shared_ptr<ElemOfQueue> other = queue.head_->nextElem_;
+            std::shared_ptr<ElemOfQueue> otherElem = other.head_->nextElem_;
 
-            while (other != nullptr) {
-                tempForNextElem->nextElem_ = std::make_shared<ElemOfQueue>(other->data_);
+            while (otherElem != nullptr) {
+                tempForNextElem->nextElem_ = std::make_shared<ElemOfQueue>(otherElem->data_);
 
                 tempForNextElem = tempForNextElem->nextElem_;
-                other = other->nextElem_;
+                otherElem = otherElem->nextElem_;
             }
             tempForNextElem->nextElem_ = nullptr;
         }
@@ -56,8 +55,8 @@ Queue<T>::Queue(const Queue<T> &queue) {
 }
 
 template<class T>
-Queue<T>::Queue(Queue<T> &&queue) noexcept {
-    head_.swap(queue.head_);
+Queue<T>::Queue(Queue<T> &&other) noexcept {
+    head_.swap(other.head_);
 }
 
 template<class T>
@@ -84,14 +83,13 @@ void Queue<T>::push(T &&data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfQueue>(std::move(data));
-            return;
+        } else{
+            auto temp = head_;
+            while (temp->nextElem_ != nullptr) {
+                temp = temp->nextElem_;
+            }
+            temp->nextElem_ = std::make_shared<ElemOfQueue>(std::move(data));
         }
-
-        auto temp = head_;
-        while (temp->nextElem_ != nullptr) {
-            temp = temp->nextElem_;
-        }
-        temp->nextElem_ = std::make_shared<ElemOfQueue>(std::move(data));
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();

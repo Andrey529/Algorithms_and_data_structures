@@ -22,8 +22,8 @@ public:
     Queue() : head_() { }
     explicit Queue(const T& data);
     explicit Queue(T&& data);
-    Queue(const Queue<T>& queue);
-    Queue(Queue<T>&& queue) noexcept ;
+    Queue(const Queue<T>& other);
+    Queue(Queue<T>&& other) noexcept ;
 
     void push(const T& data);
     void push(T&& data);
