@@ -20,8 +20,9 @@ public:
     List() : head_() { }
     explicit List(const T &data);
     explicit List(T &&data);
-    List(const List<T> &list);
-    List(List<T> &&list) noexcept ;
+    List(const List<T> &other);
+    List(List<T> &&other) noexcept ;
+    ~List() = default;
 
     bool isEmpty() const; // checking if the list is empty
     void pushBack(const T &data); //adding new element in the end of the list
@@ -40,14 +41,14 @@ public:
     const T& at(size_t index) const; // getting an element data at the index
     T& at(size_t index);
 
-    size_t get_size() const; // getting list size
-    void set(size_t index, const T &data); // replacing the element by index with the passed element
-    void set(size_t index, T &&data);
+    size_t getSize() const; // getting list size
+//    void set(size_t index, const T &data); // replacing the element by index with the passed element
+//    void set(size_t index, T &&data);
 
-    void remove(size_t index); // deleting an element by index
-    void clear(); // removing all list elements
+//    void remove(size_t index); // deleting an element by index
+//    void clear(); // removing all list elements
 
-    friend std::ostream& operator<< (std::ostream &out, const List &list); // overloading operator <<
+//    friend std::ostream& operator<< (std::ostream &out, const List &list); // overloading operator <<
 };
 
 

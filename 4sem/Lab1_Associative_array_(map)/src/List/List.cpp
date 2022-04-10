@@ -29,21 +29,21 @@ List<T>::List(T &&data) {
 }
 
 template<class T>
-List<T>::List(const List<T> &list) {
+List<T>::List(const List<T> &other) {
     try {
-        if (list.isEmpty()) {
+        if (other.isEmpty()) {
             head_ = nullptr;
         } else {
-            head_ = std::make_shared<ElemOfList>(list.head_->data_);
+            head_ = std::make_shared<ElemOfList>(other.head_->data_);
 
             std::shared_ptr<ElemOfList> tempForNextElem = head_;
-            std::shared_ptr<ElemOfList> other = list.head_->nextElem_;
+            std::shared_ptr<ElemOfList> otherElem = other.head_->nextElem_;
 
-            while (other != nullptr) {
-                tempForNextElem->nextElem_ = std::make_shared<ElemOfList>(other->data_);
+            while (otherElem != nullptr) {
+                tempForNextElem->nextElem_ = std::make_shared<ElemOfList>(otherElem->data_);
 
                 tempForNextElem = tempForNextElem->nextElem_;
-                other = other->nextElem_;
+                otherElem = otherElem->nextElem_;
             }
             tempForNextElem->nextElem_ = nullptr;
         }
@@ -54,8 +54,8 @@ List<T>::List(const List<T> &list) {
 }
 
 template<class T>
-List<T>::List(List<T> &&list) noexcept {
-    head_.swap(list.head_);
+List<T>::List(List<T> &&other) noexcept {
+    head_.swap(other.head_);
 
 }
 
@@ -64,7 +64,7 @@ void List<T>::pushBack(const T &data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfList>(data);
-        } else{
+        } else {
             auto temp = head_;
             while (temp->nextElem_ != nullptr) {
                 temp = temp->nextElem_;
@@ -82,7 +82,7 @@ void List<T>::pushBack(T &&data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfList>(std::move(data));
-        } else{
+        } else {
             auto temp = head_;
             while (temp->nextElem_ != nullptr) {
                 temp = temp->nextElem_;
@@ -100,7 +100,7 @@ void List<T>::pushFront(const T &data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfList>(data);
-        } else{
+        } else {
             auto newElem = std::make_shared<ElemOfList>(data);
             newElem->nextElem_ = head_;
             head_ = newElem;
@@ -116,7 +116,7 @@ void List<T>::pushFront(T &&data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfList>(std::move(data));
-        } else{
+        } else {
             auto newElem = std::make_shared<ElemOfList>(std::move(data));
             newElem->nextElem_ = head_;
             head_ = newElem;
@@ -130,22 +130,127 @@ void List<T>::pushFront(T &&data) {
 template<class T>
 void List<T>::popBack() {
     if (this->isEmpty()) throw std::logic_error("The list is already empty in function popBack()");
-    if (head_.nextElem_ == nullptr) {
+    if (getSize() == 1) {
         head_ = nullptr;
-        return;
-    }
-    auto elem = head_;
+    } else {
+        auto elem = head_;
 
-    while (elem->nextElem_->nextElem_ != nullptr) {
-        elem = elem->nextElem_;
+        while (elem->nextElem_->nextElem_ != nullptr) {
+            elem = elem->nextElem_;
+        }
+        elem->nextElem_ = nullptr;
     }
-    elem->nextElem_ = nullptr;
 }
 
 template<class T>
 void List<T>::popFront() {
     if (this->isEmpty()) throw std::logic_error("The list is already empty in function popBack()");
     head_ = head_->nextElem_;
+}
+
+template<class T>
+void List<T>::insert(const T &data, size_t index) {
+    try {
+        if (this->isEmpty()) {
+            head_ = std::make_shared<ElemOfList>(data);
+            return;
+        }
+
+        if (index + 1 > getSize()) {
+            throw std::invalid_argument("Index greater than size of list in function insert()");
+        }
+
+        if (index == 0) {
+            auto newElem = std::make_shared<ElemOfList>(data);
+            newElem->nextElem_ = head_;
+            head_ = newElem;
+            return;
+        }
+
+        auto elem = head_;
+        for (int i = 0; i < index - 1; i++) {
+            elem = elem->nextElem_;
+        }
+        auto newElem = std::make_shared<ElemOfList>(data);
+        newElem->nextElem_ = elem->nextElem_;
+        elem->nextElem_ = newElem;
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T>
+void List<T>::insert(T &&data, size_t index) {
+    try {
+        if (this->isEmpty()) {
+            head_ = std::make_shared<ElemOfList>(std::move(data));
+            return;
+        }
+
+        if (index + 1 > getSize()) {
+            throw std::invalid_argument("Index greater than size of list in function insert()");
+        }
+
+        if (index == 0) {
+            auto newElem = std::make_shared<ElemOfList>(std::move(data));
+            newElem->nextElem_ = head_;
+            head_ = newElem;
+            return;
+        }
+
+        auto elem = head_;
+        for (int i = 0; i < index - 1; i++) {
+            elem = elem->nextElem_;
+        }
+        auto newElem = std::make_shared<ElemOfList>(std::move(data));
+        newElem->nextElem_ = elem->nextElem_;
+        elem->nextElem_ = newElem;
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T>
+size_t List<T>::getSize() const {
+    size_t size = 0;
+    auto elem = head_;
+    while (elem != nullptr) {
+        elem = elem->nextElem_;
+        ++size;
+    }
+    return size;
+}
+
+template<class T>
+const T &List<T>::at(size_t index) const {
+    if ((index + 1) > getSize()) {
+        throw std::invalid_argument("Index greater than size of list in function at()");
+    }
+    auto elem = head_;
+
+    int i = 0;
+    while (i != index) {
+        elem = elem->nextElem_;
+        i++;
+    }
+    return elem->data_;
+}
+
+template<class T>
+T &List<T>::at(size_t index) {
+    if ((index + 1) > getSize()) {
+        throw std::invalid_argument("Index greater than size of list in function at()");
+    }
+    auto elem = head_;
+
+    int i = 0;
+    while (i != index) {
+        elem = elem->nextElem_;
+        i++;
+    }
+    return elem->data_;
 }
 
 
