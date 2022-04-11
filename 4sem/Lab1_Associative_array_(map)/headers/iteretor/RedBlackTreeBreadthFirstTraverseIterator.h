@@ -20,7 +20,8 @@ public:
     elemType getCurrent();
     void setCurrent(elemType current);
 
-
+    elemOfRedBlackTree<T_key, T_value> next() override;
+    bool hasNext() override;
 
 //    binaryTreeSearchBreadthFirstTraverseIterator(elemOfBinaryTreeSearch<T> *start = nullptr);
 //    ~binaryTreeSearchBreadthFirstTraverseIterator() = default;
@@ -31,5 +32,11 @@ public:
 //    elemOfBinaryTreeSearch<T> next() override;
 //    bool hasNext() override;
 };
+
+template<class T_key, class T_value>
+RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFirstTraverseIterator(
+        RedBlackTreeBreadthFirstTraverseIterator::elemType start) {
+
+}
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREEBREADTHFIRSTTRAVERSEITERATOR_H
