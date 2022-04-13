@@ -2,16 +2,16 @@
 #define LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_H
 
 #include "elemOfRedBlackTree.h"
-#include "../iteretor/RedBlackTreeBreadthFirstTraverseIterator.h"
+#include "../iterator/RedBlackTreeBreadthFirstTraverseIterator.h"
 #include "../List/List.h"
 
 template<class T_key, class T_value, class comparator = std::less<T_key>>
 class redBlackTree{
 private:
-    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head;
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head_;
 public:
     redBlackTree(const T_key &key, const T_value &value);
-    redBlackTree() : head(nullptr) {}
+    redBlackTree() : head_(nullptr) {}
     ~redBlackTree() = default;
 
     bool isEmpty() const;
@@ -20,12 +20,12 @@ public:
 //    iterator<elemOfRedBlackTree<T_key, T_value>> *create_dft_iterator();
     std::unique_ptr<iterator<elemOfRedBlackTree<T_key, T_value>>> create_dft_iterator();
 
-    void remove(T_key key); // удаление элемента по ключу
+//    void remove(T_key key); // удаление элемента по ключу
 //    const std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> find(T_key key) const; // поиск элемента по ключу
     void clear(); // очищение ассоциативного массива
-    List<T_key> get_keys(); // возвращает список ключей
-    List<T_value> get_values(); // возвращает список значений
-    void print(); // вывод в консоль
+//    List<T_key> get_keys(); // возвращает список ключей
+//    List<T_value> get_values(); // возвращает список значений
+//    void print(); // вывод в консоль
 
 };
 

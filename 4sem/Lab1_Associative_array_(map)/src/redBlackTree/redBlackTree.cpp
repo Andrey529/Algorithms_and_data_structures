@@ -7,13 +7,13 @@ template<class T_key, class T_value, class comparator>
 redBlackTree<T_key, T_value, comparator>::redBlackTree(const T_key &key,
                                                        const T_value &value) { // root color always black
     try {
-        this->head = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
+        this->head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
 
-        auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
-        auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
+        auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
+        auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
 
-        this->head->setNextLeft(std::move(nilLeft));
-        this->head->setNextRight(std::move(nilRight));
+        this->head_->setNextLeft(std::move(nilLeft));
+        this->head_->setNextRight(std::move(nilRight));
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
@@ -25,7 +25,7 @@ redBlackTree<T_key, T_value, comparator>::redBlackTree(const T_key &key,
 
 template<class T_key, class T_value, class comparator>
 bool redBlackTree<T_key, T_value, comparator>::isEmpty() const {
-    return this->head == nullptr;
+    return this->head_ == nullptr;
 }
 
 template<class T_key, class T_value, class comparator>
@@ -33,11 +33,11 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
 
     if (isEmpty()) {
         try {
-            this->head = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
-            auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
-            auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head);
-            this->head->setNextLeft(std::move(nilLeft));
-            this->head->setNextRight(std::move(nilRight));
+            this->head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
+            auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
+            auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
+            this->head_->setNextLeft(std::move(nilLeft));
+            this->head_->setNextRight(std::move(nilRight));
         }
         catch (const std::bad_alloc &error) {
             std::cout << error.what();
@@ -53,7 +53,7 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
             std::cout << error.what();
             return;
         }
-        auto tempElem = this->head;
+        auto tempElem = this->head_;
 
 
         // insert new element in red-black tree
@@ -115,7 +115,18 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
 
 template<class T_key, class T_value, class comparator>
 void redBlackTree<T_key, T_value, comparator>::clear() {
-    head = nullptr;
+    head_ = nullptr;
+}
+
+template<class T_key, class T_value, class comparator>
+std::unique_ptr<iterator<elemOfRedBlackTree<T_key, T_value>>>
+redBlackTree<T_key, T_value, comparator>::create_dft_iterator() {
+    if (head_ == nullptr)
+        throw std::logic_error("An iterator cannot be created because there is no element in the tree.");
+    return std::make_unique<RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>>(head_);
+
+//    return new binaryTreeSearchDepthFirstTraverseIterator(this->head_);
+
 }
 
 

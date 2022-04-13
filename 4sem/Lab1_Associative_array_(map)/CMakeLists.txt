@@ -8,6 +8,10 @@ add_executable(
         headers/associativeArray/associativeArray.h src/associativeArray/associativeArray.cpp
         headers/redBlackTree/redBlackTree.h src/redBlackTree/redBlackTree.cpp
         headers/redBlackTree/elemOfRedBlackTree.h src/redBlackTree/elemOfRedBlackTree.cpp
-        headers/iteretor/iterator.h
-        headers/dataPair/dataPair.h headers/Queue/Queue.h src/Queue/Queue.cpp headers/List/List.h src/List/List.cpp headers/iteretor/RedBlackTreeBreadthFirstTraverseIterator.h src/iterator/RedBlackTreeBreadthFirstTraverseIterator.cpp)
+        headers/iterator/iterator.h
+        headers/dataPair/dataPair.h
+        headers/Queue/Queue.h src/Queue/Queue.cpp
+        headers/List/List.h src/List/List.cpp
+        headers/iterator/RedBlackTreeBreadthFirstTraverseIterator.h src/iterator/RedBlackTreeBreadthFirstTraverseIterator.cpp
+)
 add_subdirectory(Google_tests)

@@ -7,14 +7,14 @@
 #include "../redBlackTree/elemOfRedBlackTree.h"
 
 template<class T_key, class T_value>
-class RedBlackTreeBreadthFirstTraverseIterator : public iterator<T_key>{
+class RedBlackTreeBreadthFirstTraverseIterator : public iterator<elemOfRedBlackTree<T_key, T_value>>{
 private:
     using elemType = std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>;
-    using queueType = std::unique_ptr<Queue<elemOfRedBlackTree<T_key, T_value>>>;
+    using queueType = std::unique_ptr<Queue<elemType>>;
     elemType current_;
     queueType queue_;
 public:
-    RedBlackTreeBreadthFirstTraverseIterator(elemType start = nullptr);
+    explicit RedBlackTreeBreadthFirstTraverseIterator(elemType start = nullptr);
     ~RedBlackTreeBreadthFirstTraverseIterator() = default;
 
     elemType getCurrent();
@@ -22,6 +22,9 @@ public:
 
     elemOfRedBlackTree<T_key, T_value> next() override;
     bool hasNext() override;
+
+//    elemOfRedBlackTree<T_key, T_value> next();
+//    bool hasNext();
 
 //    binaryTreeSearchBreadthFirstTraverseIterator(elemOfBinaryTreeSearch<T> *start = nullptr);
 //    ~binaryTreeSearchBreadthFirstTraverseIterator() = default;
@@ -33,10 +36,9 @@ public:
 //    bool hasNext() override;
 };
 
-template<class T_key, class T_value>
-RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFirstTraverseIterator(
-        RedBlackTreeBreadthFirstTraverseIterator::elemType start) {
 
-}
+
+
+#include "../../src/iterator/RedBlackTreeBreadthFirstTraverseIterator.cpp"
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREEBREADTHFIRSTTRAVERSEITERATOR_H

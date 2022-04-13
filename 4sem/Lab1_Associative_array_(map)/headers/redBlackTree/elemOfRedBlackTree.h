@@ -11,7 +11,7 @@ enum class COLOR {
 };
 
 template<class T_key, class T_value>
-class elemOfRedBlackTree : public std::enable_shared_from_this<elemOfRedBlackTree<T_key, T_value>> {
+class elemOfRedBlackTree{  //  : public std::enable_shared_from_this<elemOfRedBlackTree<T_key, T_value>>
 private:
     COLOR color_;
     std::unique_ptr<dataPair<T_key, T_value>> data_;
