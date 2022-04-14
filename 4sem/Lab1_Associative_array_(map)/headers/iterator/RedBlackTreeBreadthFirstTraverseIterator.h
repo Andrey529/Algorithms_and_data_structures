@@ -7,7 +7,7 @@
 #include "../redBlackTree/elemOfRedBlackTree.h"
 
 template<class T_key, class T_value>
-class RedBlackTreeBreadthFirstTraverseIterator : public iterator<elemOfRedBlackTree<T_key, T_value>>{
+class RedBlackTreeBreadthFirstTraverseIterator : public iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>{
 private:
     using elemType = std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>;
     using queueType = std::unique_ptr<Queue<elemType>>;
@@ -20,7 +20,7 @@ public:
     elemType getCurrent();
     void setCurrent(elemType current);
 
-    elemOfRedBlackTree<T_key, T_value> next() override;
+    elemType next();
     bool hasNext() override;
 
 //    elemOfRedBlackTree<T_key, T_value> next();

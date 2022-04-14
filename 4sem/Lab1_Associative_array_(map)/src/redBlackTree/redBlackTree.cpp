@@ -119,7 +119,7 @@ void redBlackTree<T_key, T_value, comparator>::clear() {
 }
 
 template<class T_key, class T_value, class comparator>
-std::unique_ptr<iterator<elemOfRedBlackTree<T_key, T_value>>>
+std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>
 redBlackTree<T_key, T_value, comparator>::create_dft_iterator() {
     if (head_ == nullptr)
         throw std::logic_error("An iterator cannot be created because there is no element in the tree.");

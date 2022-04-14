@@ -8,7 +8,12 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFir
         RedBlackTreeBreadthFirstTraverseIterator::elemType start) {
 
     current_ = start;
-    queue_(std::make_unique<Queue<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>(current_));   // current_.get() or  *(current_.get())
+    queue_ = std::make_unique<Queue<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>();
+    queue_->push(current_);
+
+//    std::unique_ptr<Queue<std::shared_ptr<elemOfRedBlackTree<int, int>>>> queue;
+//    queue = std::make_unique<Queue<std::shared_ptr<elemOfRedBlackTree<int, int>>>>();
+//    queue->push(std::make_shared<elemOfRedBlackTree<int, int>>(1,1,COLOR::RED));
 
 }
 
@@ -30,19 +35,32 @@ bool RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::hasNext() {
 }
 
 template<class T_key, class T_value>
-elemOfRedBlackTree <T_key, T_value> RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::next() {
+typename RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::elemType
+RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::next() {
 
-//    if (!hasNext()) {
-//        throw std::out_of_range("No more elements in red black tree search. Function next()");
+    if (!hasNext()) {
+        throw std::out_of_range("No more elements in red black tree search. Function next()");
+    }
+
+    current_ = queue_->getFront().lock()->data_;
+    queue_->pop();  // delete current in queue
+
+//    if (current_->isNil()) {
+//        std::cout << "Nil";
 //    }
-//    current_ = queue_->getFront().lock()->data_;
-//    queue_->pop();  // delete current in queue
-//    if (current_->getNextLeft() != nullptr)  // set in queue childs of current
-//        queue_->push(current_->getNextLeft());
+
+    if (!(current_->getNextLeft()->isNil()))  // set in queue childs of current
+        queue_->push(current_->getNextLeft());
+    if (!(current_->getNextRight()->isNil()))
+        queue_->push(current_->getNextRight());
+
+//    if (current_->getNextLeft() != nullptr)
 //    if (current_->getNextRight() != nullptr)
-//        queue_->push(current_->getNextRight());
+
+    return current_;
+
 //    return *(current_.get()); // return current
-    return elemOfRedBlackTree<T_key, T_value>();
+//    return elemOfRedBlackTree<T_key, T_value>();
 }
 
 
