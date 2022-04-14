@@ -159,6 +159,49 @@ void redBlackTree<T_key, T_value, comparator>::print() {
     }
 }
 
+template<class T_key, class T_value, class comparator>
+std::weak_ptr<elemOfRedBlackTree<T_key, T_value>>
+redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
+
+    if (isEmpty())
+        throw std::logic_error("Cannot find element with this key because there is no element in the tree.");
+
+    auto elem = head_;
+    comparator cmp = comparator{};
+
+    while (!(elem->isNil())) {
+        if (cmp(elem->getKey(), key)) { // if (key > elem->getKey())
+            elem = elem->getNextRight();
+        } else if (cmp(key, elem->getKey())) {   // if (elem->getKey() > key)
+            elem = elem->getNextLeft();
+        } else {    // key == elem->getKey()
+
+        }
+//
+//        if ( (cmp(key, elem->getKey())) && (elem->getNextLeft()->isNil()) ) {   // if (key < elem->getKey())
+//
+//        }
+//
+//        else if ( (data < tempElem->getData()) && (tempElem->getNextLeft() == nullptr) ){
+//            return false;
+//        }
+//        else if ( (data < tempElem->getData()) && (tempElem->getNextLeft() != nullptr) ){
+//            tempElem = tempElem->getNextLeft();
+//            continue;
+//        }
+//        else if ( (data > tempElem->getData()) && (tempElem->getNextRight() == nullptr) ){
+//            return false;
+//        }
+//        else if ( (data > tempElem->getData()) && (tempElem->getNextRight() != nullptr) ){
+//            tempElem = tempElem->getNextRight();
+//            continue;
+//        }
+
+
+
+    }
+    return std::weak_ptr<elemOfRedBlackTree<T_key, T_value>>();
+}
 
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_CPP

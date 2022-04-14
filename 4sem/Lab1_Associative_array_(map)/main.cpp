@@ -36,10 +36,16 @@ int main() {
 
     tree.print();
 
-//    std::map<int, int> map;
-//    for (int i = 0; i < 5; ++i) {
-//        map.insert(std::pair<int, int>(i, i));
-//    }
+
+
+
+    std::map<int, int> map;
+    for (int i = 0; i < 5; ++i) {
+        map.insert(std::pair<int, int>(i, i));
+    }
+
+    map.find(6);
+
 //    map.insert(std::pair<int, int>(1, 2));
 //
 //    for (auto const &pair: map) {

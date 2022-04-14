@@ -20,7 +20,7 @@ public:
     std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
 
 //    void remove(T_key key); // удаление элемента по ключу
-//    std::weak_ptr<elemOfRedBlackTree<T_key, T_value>> find(const T_key &key) const; // поиск элемента по ключу
+    std::weak_ptr<elemOfRedBlackTree<T_key, T_value>> find(const T_key &key) const; // поиск элемента по ключу
     void clear(); // очищение ассоциативного массива
     List<T_key> getKeys(); // возвращает список ключей
     List<T_value> getValues(); // возвращает список значений
