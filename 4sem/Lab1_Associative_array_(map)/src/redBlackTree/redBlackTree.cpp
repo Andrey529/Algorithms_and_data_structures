@@ -120,7 +120,7 @@ void redBlackTree<T_key, T_value, comparator>::clear() {
 
 template<class T_key, class T_value, class comparator>
 std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>
-redBlackTree<T_key, T_value, comparator>::create_dft_iterator() {
+redBlackTree<T_key, T_value, comparator>::createDftIterator() {
     if (head_ == nullptr)
         throw std::logic_error("An iterator cannot be created because there is no element in the tree.");
     return std::make_unique<RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>>(head_);
@@ -128,6 +128,37 @@ redBlackTree<T_key, T_value, comparator>::create_dft_iterator() {
 //    return new binaryTreeSearchDepthFirstTraverseIterator(this->head_);
 
 }
+
+template<class T_key, class T_value, class comparator>
+List<T_key> redBlackTree<T_key, T_value, comparator>::getKeys() {
+
+    auto it = createDftIterator();
+    List<T_key> list;
+    while (it->hasNext()) {
+        list.pushBack(it->next()->getKey());
+    }
+    return list;
+}
+
+template<class T_key, class T_value, class comparator>
+List<T_value> redBlackTree<T_key, T_value, comparator>::getValues() {
+    auto it = createDftIterator();
+    List<T_key> list;
+    while (it->hasNext()) {
+        list.pushBack(it->next()->getValue());
+    }
+    return list;
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::print() {
+    auto it = createDftIterator();
+    while (it->hasNext()) {
+        auto elem = it->next();
+        std::cout << "{" << elem->getKey() << ": " << elem->getValue() << "}\n";
+    }
+}
+
 
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_CPP

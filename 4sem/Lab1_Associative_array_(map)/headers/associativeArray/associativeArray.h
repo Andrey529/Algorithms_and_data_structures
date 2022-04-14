@@ -25,8 +25,8 @@ public:
 //    void clear(); // очищение ассоциативного массива
 //
 //
-//    std::unique_ptr<T_key[]> get_keys(); // возвращает список ключей
-//    std::unique_ptr<T_value[]> get_values(); // возвращает список значений
+//    std::unique_ptr<T_key[]> getKeys(); // возвращает список ключей
+//    std::unique_ptr<T_value[]> getValues(); // возвращает список значений
 //
 //    void print(); // вывод в консоль
 

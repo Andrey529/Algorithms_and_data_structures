@@ -2,6 +2,8 @@
 
 #include "headers/associativeArray/associativeArray.h"
 
+#include <map>
+
 int main() {
     redBlackTree<int, int> tree(10, 10);
 
@@ -9,21 +11,40 @@ int main() {
     tree.insert(8, 8);
     tree.insert(5, 5);
     tree.insert(17, 17);
-//    tree.insert(12, 12);
-//    tree.insert(9,9);
+    tree.insert(12, 12);
+    tree.insert(9, 9);
 
     /*
+
                  10
-            8          13
+            8            13
         5      9     12      17
+
     */
     std::cout << "Breadth-first iterator:" << std::endl;
-    auto it = tree.create_dft_iterator();
+    auto it = tree.createDftIterator();
     while (it->hasNext()) {
-        std::cout << it->next()->getValue() << ' ';
+        std::cout << it->next()->getKey() << ' ';
     }
     std::cout << std::endl;
 
+    auto listKeys = tree.getKeys();
+    std::cout << listKeys << std::endl;
+
+    auto listValues = tree.getValues();
+    std::cout << listValues << std::endl;
+
+    tree.print();
+
+//    std::map<int, int> map;
+//    for (int i = 0; i < 5; ++i) {
+//        map.insert(std::pair<int, int>(i, i));
+//    }
+//    map.insert(std::pair<int, int>(1, 2));
+//
+//    for (auto const &pair: map) {
+//        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+//    }
 
 //    std::unique_ptr<Queue<int>> queueInt;
 //    queueInt = std::make_unique<Queue<int>>();
