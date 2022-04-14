@@ -48,7 +48,9 @@ public:
 //    void remove(size_t index); // deleting an element by index
 //    void clear(); // removing all list elements
 
-//    friend std::ostream& operator<< (std::ostream &out, const List &list); // overloading operator <<
+    template<typename U>
+    friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
+
 };
 
 
