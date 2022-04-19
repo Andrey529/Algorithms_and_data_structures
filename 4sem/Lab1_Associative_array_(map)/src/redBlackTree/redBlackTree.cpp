@@ -7,13 +7,13 @@ template<class T_key, class T_value, class comparator>
 redBlackTree<T_key, T_value, comparator>::redBlackTree(const T_key &key,
                                                        const T_value &value) { // root color always black
     try {
-        this->head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
+        head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
 
-        auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
-        auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
+        auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(head_);
+        auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(head_);
 
-        this->head_->setNextLeft(std::move(nilLeft));
-        this->head_->setNextRight(std::move(nilRight));
+        head_->setNextLeft(std::move(nilLeft));
+        head_->setNextRight(std::move(nilRight));
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
@@ -25,7 +25,7 @@ redBlackTree<T_key, T_value, comparator>::redBlackTree(const T_key &key,
 
 template<class T_key, class T_value, class comparator>
 bool redBlackTree<T_key, T_value, comparator>::isEmpty() const {
-    return this->head_ == nullptr;
+    return head_ == nullptr;
 }
 
 template<class T_key, class T_value, class comparator>
@@ -33,11 +33,11 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
 
     if (isEmpty()) {
         try {
-            this->head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
-            auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
-            auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(this->head_);
-            this->head_->setNextLeft(std::move(nilLeft));
-            this->head_->setNextRight(std::move(nilRight));
+            head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
+            auto nilLeft = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(head_);
+            auto nilRight = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(head_);
+            head_->setNextLeft(std::move(nilLeft));
+            head_->setNextRight(std::move(nilRight));
         }
         catch (const std::bad_alloc &error) {
             std::cout << error.what();
@@ -53,7 +53,7 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
             std::cout << error.what();
             return;
         }
-        auto tempElem = this->head_;
+        auto tempElem = head_;
 
 
         // insert new element in red-black tree
@@ -160,47 +160,29 @@ void redBlackTree<T_key, T_value, comparator>::print() {
 }
 
 template<class T_key, class T_value, class comparator>
-std::weak_ptr<elemOfRedBlackTree<T_key, T_value>>
-redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
-
+bool redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
     if (isEmpty())
         throw std::logic_error("Cannot find element with this key because there is no element in the tree.");
 
     auto elem = head_;
     comparator cmp = comparator{};
 
-    while (!(elem->isNil())) {
-        if (cmp(elem->getKey(), key)) { // if (key > elem->getKey())
+    while (true) {
+        if (cmp(elem->getKey(), key) && !(elem->getNextRight()->isNil())) {  // elem->getKey() < key and elem->right not nill
             elem = elem->getNextRight();
-        } else if (cmp(key, elem->getKey())) {   // if (elem->getKey() > key)
+            continue;
+        } else if (cmp(elem->getKey(), key) && (elem->getNextRight()->isNil())) { // elem->getKey() < key and elem->right = nill
+            return false;
+        } else if (cmp(key, elem->getKey()) && !(elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left not nill
             elem = elem->getNextLeft();
-        } else {    // key == elem->getKey()
-
+            continue;
+        } else if (cmp(key, elem->getKey()) && (elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left = nill
+            return false;
         }
-//
-//        if ( (cmp(key, elem->getKey())) && (elem->getNextLeft()->isNil()) ) {   // if (key < elem->getKey())
-//
-//        }
-//
-//        else if ( (data < tempElem->getData()) && (tempElem->getNextLeft() == nullptr) ){
-//            return false;
-//        }
-//        else if ( (data < tempElem->getData()) && (tempElem->getNextLeft() != nullptr) ){
-//            tempElem = tempElem->getNextLeft();
-//            continue;
-//        }
-//        else if ( (data > tempElem->getData()) && (tempElem->getNextRight() == nullptr) ){
-//            return false;
-//        }
-//        else if ( (data > tempElem->getData()) && (tempElem->getNextRight() != nullptr) ){
-//            tempElem = tempElem->getNextRight();
-//            continue;
-//        }
-
-
-
+        else if (!cmp(key, elem->getKey()) && !cmp(elem->getKey(), key)) {
+            return true;
+        }
     }
-    return std::weak_ptr<elemOfRedBlackTree<T_key, T_value>>();
 }
 
 

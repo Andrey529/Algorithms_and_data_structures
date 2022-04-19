@@ -36,15 +36,18 @@ int main() {
 
     tree.print();
 
+    std::cout << tree.find(10) << ' ' << tree.find(8) << ' ' << tree.find(17) << ' ' << tree.find(12) << ' ' << tree.find(5) << "\n";
+    std::cout << tree.find(100) << ' ' << tree.find(-1) << ' ' << tree.find(15) << '\n';
 
 
 
-    std::map<int, int> map;
-    for (int i = 0; i < 5; ++i) {
-        map.insert(std::pair<int, int>(i, i));
-    }
 
-    map.find(6);
+//    std::map<int, int> map;
+//    for (int i = 0; i < 5; ++i) {
+//        map.insert(std::pair<int, int>(i, i));
+//    }
+//
+//    map.find(6);
 
 //    map.insert(std::pair<int, int>(1, 2));
 //

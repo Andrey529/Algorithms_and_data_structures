@@ -19,8 +19,8 @@ public:
     void insert(const T_key &key, const T_value &value); // добавление элемента с ключом и значением
     std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
 
-//    void remove(T_key key); // удаление элемента по ключу
-    std::weak_ptr<elemOfRedBlackTree<T_key, T_value>> find(const T_key &key) const; // поиск элемента по ключу
+//    void remove(const T_key &key); // удаление элемента по ключу
+    bool find(const T_key &key) const; // поиск элемента по ключу
     void clear(); // очищение ассоциативного массива
     List<T_key> getKeys(); // возвращает список ключей
     List<T_value> getValues(); // возвращает список значений
