@@ -17,8 +17,8 @@ public:
     explicit RedBlackTreeBreadthFirstTraverseIterator(elemType start = nullptr);
     ~RedBlackTreeBreadthFirstTraverseIterator() = default;
 
-//    elemType getCurrent();
-//    void setCurrent(elemType current);
+    elemType getCurrent() override;
+    void setCurrent(elemType current) override;
 
     elemType next() override;
     bool hasNext() override;

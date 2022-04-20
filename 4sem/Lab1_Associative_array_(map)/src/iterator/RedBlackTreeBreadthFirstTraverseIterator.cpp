@@ -17,17 +17,17 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFir
 
 }
 
-//template<class T_key, class T_value>
-//typename RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::elemType
-//RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::getCurrent() {
-//    return current_;
-//}
-//
-//template<class T_key, class T_value>
-//void RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::setCurrent(
-//        RedBlackTreeBreadthFirstTraverseIterator::elemType current) {
-//    current_ = current;
-//}
+template<class T_key, class T_value>
+typename RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::elemType
+RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::getCurrent() {
+    return current_;
+}
+
+template<class T_key, class T_value>
+void RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::setCurrent(
+        RedBlackTreeBreadthFirstTraverseIterator::elemType current) {
+    current_ = current;
+}
 
 template<class T_key, class T_value>
 bool RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::hasNext() {
