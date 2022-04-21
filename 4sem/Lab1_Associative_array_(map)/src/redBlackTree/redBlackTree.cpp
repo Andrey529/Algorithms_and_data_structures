@@ -165,7 +165,8 @@ void redBlackTree<T_key, T_value, comparator>::print() {
 }
 
 template<class T_key, class T_value, class comparator>
-std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
+std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>
+redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
     if (isEmpty())
         throw std::logic_error("Cannot find element with this key because there is no element in the tree.");
 
@@ -276,8 +277,7 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
                 grandParent->setColor(COLOR::RED);
                 rightRotate(grandParent);
             }
-        }
-        else {/* if (parent == grandParent->getNextRight()) {*/
+        } else {/* if (parent == grandParent->getNextRight()) {*/
             if (grandParent->getNextLeft()->getColor() == COLOR::RED) {
                 grandParent->getNextLeft()->setColor(COLOR::BLACK);
                 grandParent->getNextRight()->setColor(COLOR::BLACK);
@@ -306,10 +306,44 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
 
 template<class T_key, class T_value, class comparator>
 void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
-//    auto originalColor =
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemToBeDeleted;
+    try {
+        elemToBeDeleted = find(key);
+    }
+    catch (const std::exception &error) {
+        std::cout << error.what();
+        return;
+    }
+
+    if (!(elemToBeDeleted->isNil())) {
+        auto originalColor = elemToBeDeleted->getColor();
+
+        if (elemToBeDeleted->getNextLeft()->isNil()) {
+            auto rightChildOfDeletedElem = elemToBeDeleted->getNextRight();
+
+            auto parentOfDeletedElem = elemToBeDeleted->getParent().lock();
+            if (parentOfDeletedElem->getNextLeft() == elemToBeDeleted) {
+                parentOfDeletedElem->setNextLeft(rightChildOfDeletedElem);
+                rightChildOfDeletedElem->setParent(parentOfDeletedElem);
+            } else /*parentOfDeletedElem->getNextRight() == elemToBeDeleted*/ {
+                parentOfDeletedElem->setNextRight(rightChildOfDeletedElem);
+                rightChildOfDeletedElem->setParent(parentOfDeletedElem);
+            }
+        } else if (elemToBeDeleted->getNextRight()->isNil()) {
+            auto leftChildOfDeletedElem = elemToBeDeleted->getNextLeft();
+
+            auto parentOfDeletedElem = elemToBeDeleted->getParent().lock();
+            if (parentOfDeletedElem->getNextLeft() == elemToBeDeleted) {
+                parentOfDeletedElem->setNextLeft(leftChildOfDeletedElem);
+                leftChildOfDeletedElem->setParent(parentOfDeletedElem);
+            } else /*parentOfDeletedElem->getNextRight() == elemToBeDeleted*/ {
+                parentOfDeletedElem->setNextRight(leftChildOfDeletedElem);
+                leftChildOfDeletedElem->setParent(parentOfDeletedElem);
+            }
+        }
+    }
+
 }
-
-
 
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_CPP
