@@ -221,7 +221,28 @@ void redBlackTree<T_key, T_value, comparator>::leftRotate(std::shared_ptr<elemOf
 
 template<class T_key, class T_value, class comparator>
 void redBlackTree<T_key, T_value, comparator>::rightRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem) {
+    auto y = elem;
+    auto x = y->getNextLeft();
 
+    y->setNextLeft(x->getNextRight());
+    y->getNextLeft()->setParent(y);
+    if (!(x->getNextRight()->isNil())) {
+        x->getNextRight()->setParent(y);
+    }
+    x->setParent(y->getParent());
+
+    if (!(y->getParent().lock())) {
+        head_ = x;
+    } else if (y->getParent().lock()->getNextRight() == y) {
+        y->getParent().lock()->setNextRight(x);
+        x->setParent(y->getParent().lock());
+    } else {
+        y->getParent().lock()->setNextLeft(x);
+        x->setParent(y->getParent().lock());
+    }
+
+    x->setNextRight(y);
+    y->setParent(x);
 }
 
 
