@@ -27,7 +27,8 @@ public:
     std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
 
     void remove(const T_key &key); // удаление элемента по ключу
-    bool find(const T_key &key) const; // поиск элемента по ключу
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> find(const T_key &key) const; // поиск элемента по ключу
+    bool contains(const T_key &key);
     void clear(); // очищение ассоциативного массива
     List<T_key> getKeys(); // возвращает список ключей
     List<T_value> getValues(); // возвращает список значений

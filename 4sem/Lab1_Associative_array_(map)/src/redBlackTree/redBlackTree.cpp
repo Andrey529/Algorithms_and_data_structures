@@ -162,7 +162,7 @@ void redBlackTree<T_key, T_value, comparator>::print() {
 }
 
 template<class T_key, class T_value, class comparator>
-bool redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
+std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
     if (isEmpty())
         throw std::logic_error("Cannot find element with this key because there is no element in the tree.");
 
@@ -176,23 +176,23 @@ bool redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
             continue;
         } else if (cmp(elem->getKey(), key) &&
                    (elem->getNextRight()->isNil())) { // elem->getKey() < key and elem->right = nill
-            return false;
+            return std::make_shared<elemOfRedBlackTree<T_key, T_value>>();
         } else if (cmp(key, elem->getKey()) &&
                    !(elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left not nill
             elem = elem->getNextLeft();
             continue;
         } else if (cmp(key, elem->getKey()) &&
                    (elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left = nill
-            return false;
+            return std::make_shared<elemOfRedBlackTree<T_key, T_value>>();
         } else if (!cmp(key, elem->getKey()) && !cmp(elem->getKey(), key)) {
-            return true;
+            return elem;
         }
     }
 }
 
 template<class T_key, class T_value, class comparator>
-void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
-
+bool redBlackTree<T_key, T_value, comparator>::contains(const T_key &key) {
+    return !(find(key)->isNil());
 }
 
 template<class T_key, class T_value, class comparator>
@@ -253,7 +253,7 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
 
     auto parent = newElem->getParent().lock();
     auto grandParent = parent->getParent().lock();
-    while (parent == COLOR::RED) {
+    while (parent->getColor() == COLOR::RED) {
         if (parent == grandParent->getNextLeft()) {
             if (grandParent->getNextRight()->getColor() == COLOR::RED) {
                 grandParent->getNextLeft()->setColor(COLOR::BLACK);
@@ -265,8 +265,8 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
                 if (newElem == parent->getNextRight()) {
                     newElem = parent;
                     leftRotate(newElem);
-                    parent = newElem->getParent();
-                    grandParent = parent->getParent();
+                    parent = newElem->getParent().lock();
+                    grandParent = parent->getParent().lock();
                 }
 
                 parent->setColor(COLOR::BLACK);
@@ -285,8 +285,8 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
                 if (newElem == parent->getNextLeft()) {
                     newElem = parent;
                     rightRotate(newElem);
-                    parent = newElem->getParent();
-                    grandParent = parent->getParent();
+                    parent = newElem->getParent().lock();
+                    grandParent = parent->getParent().lock();
                 }
 
                 parent->setColor(COLOR::BLACK);
@@ -300,6 +300,13 @@ void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
     }
     head_->setColor(COLOR::BLACK);
 }
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
+//    auto originalColor =
+}
+
+
 
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREE_CPP
