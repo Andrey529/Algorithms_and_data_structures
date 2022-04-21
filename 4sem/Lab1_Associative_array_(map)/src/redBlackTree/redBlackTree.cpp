@@ -31,8 +31,6 @@ bool redBlackTree<T_key, T_value, comparator>::isEmpty() const {
 template<class T_key, class T_value, class comparator>
 void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_value &value) {
 
-    // check if the element with key already in the tree
-
     if (isEmpty()) {
         try {
             head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
@@ -46,6 +44,11 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
             return;
         }
     } else {
+        // check if the element with key already in the tree
+        if (contains(key)) {
+            throw std::invalid_argument("The element with the given key is already in the tree");
+        }
+
         comparator cmp = comparator{};
         std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> newElem;
         try {
