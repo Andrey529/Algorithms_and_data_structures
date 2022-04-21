@@ -9,8 +9,11 @@
 template<class T_key, class T_value, class comparator = std::less<T_key>>
 class redBlackTree {
 private:
-    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head_;
+
+
 public:
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head_;
+
     redBlackTree(const T_key &key, const T_value &value);
     redBlackTree() : head_(nullptr) {}
     ~redBlackTree() = default;
@@ -19,12 +22,16 @@ public:
     void insert(const T_key &key, const T_value &value); // добавление элемента с ключом и значением
     std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
 
-//    void remove(const T_key &key); // удаление элемента по ключу
+    void remove(const T_key &key); // удаление элемента по ключу
     bool find(const T_key &key) const; // поиск элемента по ключу
     void clear(); // очищение ассоциативного массива
     List<T_key> getKeys(); // возвращает список ключей
     List<T_value> getValues(); // возвращает список значений
     void print(); // вывод в консоль
+
+    void leftRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
+    void rightRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
+
 };
 
 

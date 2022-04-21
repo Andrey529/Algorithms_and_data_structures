@@ -40,8 +40,8 @@ public:
     COLOR &getColor();
     void setColor(const COLOR &color);
 
-    std::shared_ptr<elemOfRedBlackTree> getParent() const;
-    void setParent(std::shared_ptr<elemOfRedBlackTree> parent);
+    std::weak_ptr<elemOfRedBlackTree> getParent() const;
+    void setParent(std::weak_ptr<elemOfRedBlackTree> parent);
 
     std::shared_ptr<elemOfRedBlackTree> getNextLeft() const;
     void setNextLeft(std::shared_ptr<elemOfRedBlackTree> nextLeft);

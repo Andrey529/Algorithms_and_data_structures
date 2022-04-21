@@ -98,13 +98,13 @@ void elemOfRedBlackTree<T_key, T_value>::setColor(const COLOR &color) {
 
 
 template<class T_key, class T_value>
-std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getParent() const {
+std::weak_ptr<elemOfRedBlackTree<T_key, T_value>> elemOfRedBlackTree<T_key, T_value>::getParent() const {
     if (!this) throw std::logic_error("getParent(): Attempt to interact with a null pointer");
     return parent_;
 }
 
 template<class T_key, class T_value>
-void elemOfRedBlackTree<T_key, T_value>::setParent(std::shared_ptr<elemOfRedBlackTree> parent) {
+void elemOfRedBlackTree<T_key, T_value>::setParent(std::weak_ptr<elemOfRedBlackTree> parent) {
     if (!this) throw std::logic_error("setParent(): Attempt to interact with a null pointer");
     parent_ = parent;
 }

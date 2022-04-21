@@ -168,21 +168,60 @@ bool redBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
     comparator cmp = comparator{};
 
     while (true) {
-        if (cmp(elem->getKey(), key) && !(elem->getNextRight()->isNil())) {  // elem->getKey() < key and elem->right not nill
+        if (cmp(elem->getKey(), key) &&
+            !(elem->getNextRight()->isNil())) {  // elem->getKey() < key and elem->right not nill
             elem = elem->getNextRight();
             continue;
-        } else if (cmp(elem->getKey(), key) && (elem->getNextRight()->isNil())) { // elem->getKey() < key and elem->right = nill
+        } else if (cmp(elem->getKey(), key) &&
+                   (elem->getNextRight()->isNil())) { // elem->getKey() < key and elem->right = nill
             return false;
-        } else if (cmp(key, elem->getKey()) && !(elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left not nill
+        } else if (cmp(key, elem->getKey()) &&
+                   !(elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left not nill
             elem = elem->getNextLeft();
             continue;
-        } else if (cmp(key, elem->getKey()) && (elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left = nill
+        } else if (cmp(key, elem->getKey()) &&
+                   (elem->getNextLeft()->isNil())) { // elem->getKey() > key and elem->left = nill
             return false;
-        }
-        else if (!cmp(key, elem->getKey()) && !cmp(elem->getKey(), key)) {
+        } else if (!cmp(key, elem->getKey()) && !cmp(elem->getKey(), key)) {
             return true;
         }
     }
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
+
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::leftRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem) {
+    auto x = elem;
+    auto y = x->getNextRight();
+
+    x->setNextRight(y->getNextLeft());
+    x->getNextRight()->setParent(x);
+    if (!(y->getNextLeft()->isNil())) {
+        y->getNextLeft()->setParent(x);
+    }
+    y->setParent(x->getParent());
+
+    if (!(x->getParent().lock())) { // x->getParent() == nullptr
+        head_ = y;
+    } else if (x->getParent().lock()->getNextLeft() == x) {
+        x->getParent().lock()->setNextLeft(y);
+        y->setParent(x->getParent().lock());
+    } else {
+        x->getParent().lock()->setNextRight(y);
+        y->setParent(x->getParent().lock());
+    }
+
+    y->setNextLeft(x);
+    x->setParent(y);
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::rightRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem) {
+
 }
 
 
