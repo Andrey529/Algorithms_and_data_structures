@@ -9,10 +9,14 @@
 template<class T_key, class T_value, class comparator = std::less<T_key>>
 class redBlackTree {
 private:
-
-
-public:
     std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> head_;
+
+    void leftRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
+    void rightRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
+
+    void repairTreeAfterInsert(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> newElem);
+    void repairTreeAfterRemove(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
+public:
 
     redBlackTree(const T_key &key, const T_value &value);
     redBlackTree() : head_(nullptr) {}
@@ -28,10 +32,6 @@ public:
     List<T_key> getKeys(); // возвращает список ключей
     List<T_value> getValues(); // возвращает список значений
     void print(); // вывод в консоль
-
-    void leftRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
-    void rightRotate(std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem);
-
 };
 
 

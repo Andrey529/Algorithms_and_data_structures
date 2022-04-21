@@ -31,6 +31,8 @@ bool redBlackTree<T_key, T_value, comparator>::isEmpty() const {
 template<class T_key, class T_value, class comparator>
 void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_value &value) {
 
+    // check if the element with key already in the tree
+
     if (isEmpty()) {
         try {
             head_ = std::make_shared<elemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
@@ -109,7 +111,7 @@ void redBlackTree<T_key, T_value, comparator>::insert(const T_key &key, const T_
 
 
         // function repair red-black tree
-
+        repairTreeAfterInsert(newElem);
     }
 }
 
@@ -243,6 +245,60 @@ void redBlackTree<T_key, T_value, comparator>::rightRotate(std::shared_ptr<elemO
 
     x->setNextRight(y);
     y->setParent(x);
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::repairTreeAfterInsert(
+        std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> newElem) {
+
+    auto parent = newElem->getParent().lock();
+    auto grandParent = parent->getParent().lock();
+    while (parent == COLOR::RED) {
+        if (parent == grandParent->getNextLeft()) {
+            if (grandParent->getNextRight()->getColor() == COLOR::RED) {
+                grandParent->getNextLeft()->setColor(COLOR::BLACK);
+                grandParent->getNextRight()->setColor(COLOR::BLACK);
+                grandParent->setColor(COLOR::RED);
+
+                newElem = grandParent;
+            } else {
+                if (newElem == parent->getNextRight()) {
+                    newElem = parent;
+                    leftRotate(newElem);
+                    parent = newElem->getParent();
+                    grandParent = parent->getParent();
+                }
+
+                parent->setColor(COLOR::BLACK);
+                grandParent->setColor(COLOR::RED);
+                rightRotate(grandParent);
+            }
+        }
+        else {/* if (parent == grandParent->getNextRight()) {*/
+            if (grandParent->getNextLeft()->getColor() == COLOR::RED) {
+                grandParent->getNextLeft()->setColor(COLOR::BLACK);
+                grandParent->getNextRight()->setColor(COLOR::BLACK);
+                grandParent->setColor(COLOR::RED);
+
+                newElem = grandParent;
+            } else {
+                if (newElem == parent->getNextLeft()) {
+                    newElem = parent;
+                    rightRotate(newElem);
+                    parent = newElem->getParent();
+                    grandParent = parent->getParent();
+                }
+
+                parent->setColor(COLOR::BLACK);
+                grandParent->setColor(COLOR::RED);
+                leftRotate(grandParent);
+            }
+        }
+
+        if (newElem == head_)
+            break;
+    }
+    head_->setColor(COLOR::BLACK);
 }
 
 
