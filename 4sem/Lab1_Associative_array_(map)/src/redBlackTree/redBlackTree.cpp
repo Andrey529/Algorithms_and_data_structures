@@ -340,6 +340,57 @@ void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
                 parentOfDeletedElem->setNextRight(leftChildOfDeletedElem);
                 leftChildOfDeletedElem->setParent(parentOfDeletedElem);
             }
+        } else { // 5
+            auto y = elemToBeDeleted->getNextRight();
+            while (!(y->getNextLeft()->isNil())) {
+                y = y->getNextLeft();
+            }
+
+            originalColor = y->getColor();
+            auto x = y->getNextRight();
+
+            if (y->getParent() == elemToBeDeleted) { // г
+                x->setParent(y);
+            } else {  // д
+                auto yParent = y->getParent().lock();
+                auto yNextRight = y->getNextRight();
+
+                if (yParent->getNextLeft() == y) {
+                    yParent->setNextLeft(yNextRight);
+                } else { /*yParent->getNextRight() == y*/
+                    yParent->setNextRight(yNextRight);
+                }
+                yNextRight->setParent(yParent);
+
+                // ?
+                y->setNextRight(elemToBeDeleted->getNextRight());
+                y->getNextRight()->setParent(y);
+                // ?
+            }
+
+
+            // e
+            auto parentOfDeletedElem = elemToBeDeleted->getParent().lock();
+            if (parentOfDeletedElem->getNextLeft() == elemToBeDeleted) {
+                parentOfDeletedElem->setNextLeft(y);
+            } else { /*parentOfDeletedElem->getNextRight() == elemToBeDeleted*/
+                parentOfDeletedElem->setNextRight(y);
+            }
+            y->setParent(parentOfDeletedElem);
+
+            // Ж
+            y->setColor(originalColor);
+
+            // ?
+            y->setNextLeft(elemToBeDeleted->getNextLeft());
+            y->getNextLeft()->setParent(y);
+
+            y->setColor(elemToBeDeleted->getColor());
+            // ?
+        }
+
+        if (originalColor == COLOR::BLACK) {
+            repairTreeAfterInsert(/*???*/);
         }
     }
 
