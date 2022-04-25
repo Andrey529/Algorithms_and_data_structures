@@ -10,7 +10,7 @@ class AssociativeArray{
 private:
     std::unique_ptr<RedBlackTree<T_key, T_value>> rbTree_;
 public:
-    AssociativeArray() : rbTree_(nullptr) { }
+    AssociativeArray();
     AssociativeArray(const T_key &key, const T_value &value);
     ~AssociativeArray() = default;
 

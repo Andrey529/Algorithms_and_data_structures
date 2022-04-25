@@ -4,6 +4,16 @@
 #include "../../headers/AssociativeArray/AssociativeArray.h"
 
 template<class T_key, class T_value, class comparator>
+AssociativeArray<T_key, T_value, comparator>::AssociativeArray() {
+    try {
+        this->rbTree_ = std::make_unique<RedBlackTree<T_key, T_value, comparator>>();
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T_key, class T_value, class comparator>
 AssociativeArray<T_key, T_value, comparator>::AssociativeArray(const T_key &key, const T_value &value) {
     try {
         this->rbTree_ = std::make_unique<RedBlackTree<T_key, T_value, comparator>>(key, value);
@@ -66,5 +76,6 @@ AssociativeArray<T_key, T_value, comparator>::createDftIterator() {
         throw std::logic_error("An Iterator cannot be created because there is no element in the associative array.");
     return rbTree_->createDftIterator();
 }
+
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__ASSOCIATIVEARRAY_CPP

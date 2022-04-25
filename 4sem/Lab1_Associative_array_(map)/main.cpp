@@ -3,8 +3,9 @@
 #include "headers/AssociativeArray/AssociativeArray.h"
 
 int main() {
-    AssociativeArray<int, int> map(10, 10);
+    RedBlackTree<int, int> map;
 
+    map.insert(10, 10);
     map.insert(13, 13);
     map.insert(8, 8);
     map.insert(5, 5);
@@ -43,7 +44,7 @@ int main() {
     std::cout << map.contains(10) << ' ' << map.contains(8) << ' ' << map.contains(17) << ' ' << map.contains(12) << "\n";
     std::cout << map.contains(100) << ' ' << map.contains(-1) << ' ' << map.contains(15) << '\n';
 
-    map.remove(17);
+    map.remove(13);
     map.remove(8);
     map.remove(12);
     map.remove(4);

@@ -496,3 +496,211 @@ TEST(List, atEmpty){
         ASSERT_ANY_THROW(list.at(i));
     }
 }
+
+
+
+
+
+#include "../headers/AssociativeArray/AssociativeArray.h"
+
+class TestAssociativeArray : public ::testing::Test {
+protected:
+    AssociativeArray<int, int> associativeArray;
+    List<int> correctList;
+public:
+
+    TestAssociativeArray() {
+        associativeArray.insert(10, 10);
+        associativeArray.insert(13, 13);
+        associativeArray.insert(8, 8);
+        associativeArray.insert(5, 5);
+        associativeArray.insert(17, 17);
+        associativeArray.insert(12, 12);
+        associativeArray.insert(9, 9);
+        associativeArray.insert(11, 11);
+        associativeArray.insert(4, 4);
+        associativeArray.insert(3, 3);
+
+        correctList.pushBack(10);
+        correctList.pushBack(8);
+        correctList.pushBack(13);
+        correctList.pushBack(4);
+        correctList.pushBack(9);
+        correctList.pushBack(12);
+        correctList.pushBack(17);
+        correctList.pushBack(3);
+        correctList.pushBack(5);
+        correctList.pushBack(11);
+    }
+    ~TestAssociativeArray() = default;
+};
+
+
+TEST_F(TestAssociativeArray, isEmpty) {
+    AssociativeArray<int, int> emptyMap;
+
+    ASSERT_EQ(true, emptyMap.isEmpty());
+    ASSERT_EQ(false, this->associativeArray.isEmpty());
+}
+
+TEST_F(TestAssociativeArray, insert) {
+
+    /*
+
+                   10
+             8            13
+         4      9     12      17
+
+       3   5         11
+    */
+
+    ASSERT_EQ(true, associativeArray.contains(10));
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(10)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(8));
+    ASSERT_EQ(COLOR::RED, associativeArray.find(8)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(13));
+    ASSERT_EQ(COLOR::RED, associativeArray.find(13)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(4));
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(4)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(9));
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(9)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(12));
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(12)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(17));
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(17)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(3));
+    ASSERT_EQ(COLOR::RED, associativeArray.find(3)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(5));
+    ASSERT_EQ(COLOR::RED, associativeArray.find(5)->getColor());
+
+    ASSERT_EQ(true, associativeArray.contains(11));
+    ASSERT_EQ(COLOR::RED, associativeArray.find(11)->getColor());
+}
+
+
+TEST_F(TestAssociativeArray, remove) {
+
+    /*
+
+                   10
+             8            13
+         4      9     12      17
+
+       3   5         11
+    */
+
+    ASSERT_EQ(true, associativeArray.contains(17));
+    associativeArray.remove(17);
+    ASSERT_EQ(false, associativeArray.contains(17));
+
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(10)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(8)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(12)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(4)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(9)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(11)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(13)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(3)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(5)->getColor());
+
+
+
+    ASSERT_EQ(true, associativeArray.contains(8));
+    associativeArray.remove(8);
+    ASSERT_EQ(false, associativeArray.contains(8));
+
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(10)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(4)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(12)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(3)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(9)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(11)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(13)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(5)->getColor());
+
+
+    ASSERT_EQ(true, associativeArray.contains(12));
+    associativeArray.remove(12);
+    ASSERT_EQ(false, associativeArray.contains(12));
+
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(10)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(4)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(13)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(3)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(9)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(11)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(5)->getColor());
+
+
+    ASSERT_EQ(true, associativeArray.contains(4));
+    associativeArray.remove(4);
+    ASSERT_EQ(false, associativeArray.contains(4));
+
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(10)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(5)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(13)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(3)->getColor());
+    ASSERT_EQ(COLOR::BLACK, associativeArray.find(9)->getColor());
+    ASSERT_EQ(COLOR::RED, associativeArray.find(11)->getColor());
+}
+
+TEST_F(TestAssociativeArray, find) {
+    ASSERT_EQ(10, associativeArray.find(10)->getValue());
+    ASSERT_EQ(8, associativeArray.find(8)->getValue());
+    ASSERT_EQ(13, associativeArray.find(13)->getValue());
+    ASSERT_EQ(4, associativeArray.find(4)->getValue());
+    ASSERT_EQ(9, associativeArray.find(9)->getValue());
+    ASSERT_EQ(12, associativeArray.find(12)->getValue());
+    ASSERT_EQ(17, associativeArray.find(17)->getValue());
+    ASSERT_EQ(3, associativeArray.find(3)->getValue());
+    ASSERT_EQ(5, associativeArray.find(5)->getValue());
+    ASSERT_EQ(11, associativeArray.find(11)->getValue());
+}
+
+TEST_F(TestAssociativeArray, contains) {
+    ASSERT_EQ(true, associativeArray.contains(10));
+    ASSERT_EQ(true, associativeArray.contains(8));
+    ASSERT_EQ(true, associativeArray.contains(13));
+    ASSERT_EQ(true, associativeArray.contains(4));
+    ASSERT_EQ(true, associativeArray.contains(9));
+    ASSERT_EQ(true, associativeArray.contains(12));
+    ASSERT_EQ(true, associativeArray.contains(17));
+    ASSERT_EQ(true, associativeArray.contains(3));
+    ASSERT_EQ(true, associativeArray.contains(5));
+    ASSERT_EQ(true, associativeArray.contains(11));
+
+    ASSERT_EQ(false, associativeArray.contains(1));
+    ASSERT_EQ(false, associativeArray.contains(25));
+    ASSERT_EQ(false, associativeArray.contains(60));
+    ASSERT_EQ(false, associativeArray.contains(-1));
+}
+
+TEST_F(TestAssociativeArray, clear) {
+    ASSERT_EQ(false, associativeArray.isEmpty());
+    associativeArray.clear();
+    ASSERT_EQ(true, associativeArray.isEmpty());
+}
+
+TEST_F(TestAssociativeArray, getKeys) {
+    auto list = associativeArray.getKeys();
+    ASSERT_EQ(correctList.getSize(), list.getSize());
+    for (int i = 0; i < 10; ++i) {
+        ASSERT_EQ(correctList.at(i), list.at(i));
+    }
+}
+
+TEST_F(TestAssociativeArray, getValues) {
+    auto list = associativeArray.getValues();
+    ASSERT_EQ(correctList.getSize(), list.getSize());
+    for (int i = 0; i < 10; ++i) {
+        ASSERT_EQ(correctList.at(i), list.at(i));
+    }
+}
