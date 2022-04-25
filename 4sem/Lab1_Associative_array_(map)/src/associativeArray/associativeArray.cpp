@@ -4,14 +4,9 @@
 #include "../../headers/associativeArray/associativeArray.h"
 
 template<class T_key, class T_value, class comparator>
-associativeArray<T_key, T_value, comparator>::associativeArray() {
-    this->rbTree = nullptr;
-}
-
-template<class T_key, class T_value, class comparator>
 associativeArray<T_key, T_value, comparator>::associativeArray(const T_key &key, const T_value &value) {
     try {
-        this->rbTree = std::make_unique<redBlackTree<T_key, T_value, comparator>>(key, value);
+        this->rbTree_ = std::make_unique<redBlackTree<T_key, T_value, comparator>>(key, value);
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
@@ -19,30 +14,57 @@ associativeArray<T_key, T_value, comparator>::associativeArray(const T_key &key,
 }
 
 template<class T_key, class T_value, class comparator>
-void associativeArray<T_key, T_value, comparator>::insert(const T_key &key, const T_value &value) {
-    this->rbTree->insert(key, value);
+bool associativeArray<T_key, T_value, comparator>::isEmpty() const {
+    return rbTree_->isEmpty();
 }
 
-//template<class T_key, class T_value>
-//void associativeArray<T_key, T_value>::remove(T_key key) {
-//    this->rbTree->remove(key);
-//}
-//
-//template<class T_key, class T_value>
-//void associativeArray<T_key, T_value>::clear() {
-//    this->rbTree->clear();
-//}
-//
-//template<class T_key, class T_value>
-//void associativeArray<T_key, T_value>::print() {
-//    this->rbTree->print();
-//}
+template<class T_key, class T_value, class comparator>
+void associativeArray<T_key, T_value, comparator>::insert(const T_key &key, const T_value &value) {
+    rbTree_->insert(key, value);
+}
 
-//template<class T_key, class T_value>
-//const std::unique_ptr <elemOfRedBlackTree<T_key, T_value>> associativeArray<T_key, T_value>::find(T_key key) const {
-//    std::unique_ptr<elemOfRedBlackTree<T_key, T_value>> tmp = this->rbTree->find(key);
-//    return std::move(tmp);
-//}
+template<class T_key, class T_value, class comparator>
+void associativeArray<T_key, T_value, comparator>::remove(const T_key &key) {
+    rbTree_->remove(key);
+}
 
+template<class T_key, class T_value, class comparator>
+std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>
+associativeArray<T_key, T_value, comparator>::find(const T_key &key) const {
+    return rbTree_->find(key);
+}
+
+template<class T_key, class T_value, class comparator>
+bool associativeArray<T_key, T_value, comparator>::contains(const T_key &key) {
+    return rbTree_->contains(key);
+}
+
+template<class T_key, class T_value, class comparator>
+void associativeArray<T_key, T_value, comparator>::clear() {
+    rbTree_->clear();
+}
+
+template<class T_key, class T_value, class comparator>
+List<T_key> associativeArray<T_key, T_value, comparator>::getKeys() {
+    return rbTree_->getKeys();
+}
+
+template<class T_key, class T_value, class comparator>
+List<T_value> associativeArray<T_key, T_value, comparator>::getValues() {
+    return rbTree_->getValues();
+}
+
+template<class T_key, class T_value, class comparator>
+void associativeArray<T_key, T_value, comparator>::print() {
+    rbTree_->print();
+}
+
+template<class T_key, class T_value, class comparator>
+std::unique_ptr<iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>
+associativeArray<T_key, T_value, comparator>::createDftIterator() {
+    if (rbTree_->isEmpty())
+        throw std::logic_error("An iterator cannot be created because there is no element in the associative array.");
+    return rbTree_->createDftIterator();
+}
 
 #endif //LAB1_ASSOCIATIVE_ARRAY__MAP__ASSOCIATIVEARRAY_CPP

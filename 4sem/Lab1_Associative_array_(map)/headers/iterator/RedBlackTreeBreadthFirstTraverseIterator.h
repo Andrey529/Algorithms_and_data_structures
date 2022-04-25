@@ -22,21 +22,7 @@ public:
 
     elemType next() override;
     bool hasNext() override;
-
-//    elemOfRedBlackTree<T_key, T_value> next();
-//    bool hasNext();
-
-//    binaryTreeSearchBreadthFirstTraverseIterator(elemOfBinaryTreeSearch<T> *start = nullptr);
-//    ~binaryTreeSearchBreadthFirstTraverseIterator() = default;
-//
-//    elemOfBinaryTreeSearch<T> *getCurrent() const;
-//    void setCurrent(elemOfBinaryTreeSearch<T> *current);
-//
-//    elemOfBinaryTreeSearch<T> next() override;
-//    bool hasNext() override;
 };
-
-
 
 
 #include "../../src/iterator/RedBlackTreeBreadthFirstTraverseIterator.cpp"

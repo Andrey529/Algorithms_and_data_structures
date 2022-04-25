@@ -129,9 +129,6 @@ redBlackTree<T_key, T_value, comparator>::createDftIterator() {
     if (head_ == nullptr)
         throw std::logic_error("An iterator cannot be created because there is no element in the tree.");
     return std::make_unique<RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>>(head_);
-
-//    return new binaryTreeSearchDepthFirstTraverseIterator(this->head_);
-
 }
 
 template<class T_key, class T_value, class comparator>
