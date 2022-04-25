@@ -318,27 +318,29 @@ void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
     if (!(elemToBeDeleted->isNil())) {
         auto originalColor = elemToBeDeleted->getColor();
 
+        std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> x;
+
         if (elemToBeDeleted->getNextLeft()->isNil()) {
-            auto rightChildOfDeletedElem = elemToBeDeleted->getNextRight();
+            x = elemToBeDeleted->getNextRight();
 
             auto parentOfDeletedElem = elemToBeDeleted->getParent().lock();
             if (parentOfDeletedElem->getNextLeft() == elemToBeDeleted) {
-                parentOfDeletedElem->setNextLeft(rightChildOfDeletedElem);
-                rightChildOfDeletedElem->setParent(parentOfDeletedElem);
+                parentOfDeletedElem->setNextLeft(x);
+                x->setParent(parentOfDeletedElem);
             } else /*parentOfDeletedElem->getNextRight() == elemToBeDeleted*/ {
-                parentOfDeletedElem->setNextRight(rightChildOfDeletedElem);
-                rightChildOfDeletedElem->setParent(parentOfDeletedElem);
+                parentOfDeletedElem->setNextRight(x);
+                x->setParent(parentOfDeletedElem);
             }
         } else if (elemToBeDeleted->getNextRight()->isNil()) {
-            auto leftChildOfDeletedElem = elemToBeDeleted->getNextLeft();
+            x = elemToBeDeleted->getNextLeft();
 
             auto parentOfDeletedElem = elemToBeDeleted->getParent().lock();
             if (parentOfDeletedElem->getNextLeft() == elemToBeDeleted) {
-                parentOfDeletedElem->setNextLeft(leftChildOfDeletedElem);
-                leftChildOfDeletedElem->setParent(parentOfDeletedElem);
+                parentOfDeletedElem->setNextLeft(x);
+                x->setParent(parentOfDeletedElem);
             } else /*parentOfDeletedElem->getNextRight() == elemToBeDeleted*/ {
-                parentOfDeletedElem->setNextRight(leftChildOfDeletedElem);
-                leftChildOfDeletedElem->setParent(parentOfDeletedElem);
+                parentOfDeletedElem->setNextRight(x);
+                x->setParent(parentOfDeletedElem);
             }
         } else { // 5
             auto y = elemToBeDeleted->getNextRight();
@@ -347,9 +349,9 @@ void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
             }
 
             originalColor = y->getColor();
-            auto x = y->getNextRight();
+            x = y->getNextRight();
 
-            if (y->getParent() == elemToBeDeleted) { // г
+            if (y->getParent().lock() == elemToBeDeleted) { // г
                 x->setParent(y);
             } else {  // д
                 auto yParent = y->getParent().lock();
@@ -390,10 +392,83 @@ void redBlackTree<T_key, T_value, comparator>::remove(const T_key &key) {
         }
 
         if (originalColor == COLOR::BLACK) {
-            repairTreeAfterInsert(/*???*/);
+            repairTreeAfterRemove(x);
         }
     }
 
+}
+
+template<class T_key, class T_value, class comparator>
+void redBlackTree<T_key, T_value, comparator>::repairTreeAfterRemove(
+        std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> elem) {
+
+    std::shared_ptr<elemOfRedBlackTree<T_key, T_value>> w;
+    auto x = elem;
+
+    auto xParent = x->getParent().lock();
+
+    while (x != head_ && x->getColor() == COLOR::BLACK) {
+        if (x == xParent->getNextLeft()) {
+
+            w = xParent->getNextRight();
+            if (w->getColor() == COLOR::RED) {
+                w->setColor(COLOR::BLACK);
+                xParent->setColor(COLOR::RED);
+                leftRotate(xParent);
+                w = xParent->getNextRight();
+            }
+
+            if (w->getNextLeft()->getColor() == COLOR::BLACK && w->getNextRight()->getColor() == COLOR::BLACK) {
+                w->setColor(COLOR::RED);
+                x = xParent;
+                xParent = x->getParent().lock();
+            } else {
+                if (w->getNextRight()->getColor() == COLOR::BLACK) {
+                    w->getNextLeft()->setColor(COLOR::BLACK);
+                    w->setColor(COLOR::RED);
+                    rightRotate(w);
+                    w = xParent->getNextRight();
+                } else {
+                    w->setColor(xParent->getColor());
+                    xParent->setColor(COLOR::BLACK);
+                    w->getNextRight()->setColor(COLOR::BLACK);
+                    leftRotate(xParent);
+                    x = head_;
+                    xParent = nullptr;
+                }
+            }
+        } else /*x == x->getParent().lock()->getNextRight()*/ {
+
+            w = xParent->getNextLeft();
+            if (w->getColor() == COLOR::RED) {
+                w->setColor(COLOR::BLACK);
+                xParent->setColor(COLOR::RED);
+                rightRotate(xParent);
+                w = xParent->getNextLeft();
+            }
+
+            if (w->getNextLeft()->getColor() == COLOR::BLACK && w->getNextRight()->getColor() == COLOR::BLACK) {
+                w->setColor(COLOR::RED);
+                x = xParent;
+                xParent = x->getParent().lock();
+            } else {
+                if (w->getNextLeft()->getColor() == COLOR::BLACK) {
+                    w->getNextRight()->setColor(COLOR::BLACK);
+                    w->setColor(COLOR::RED);
+                    leftRotate(w);
+                    w = xParent->getNextLeft();
+                } else {
+                    w->setColor(xParent->getColor());
+                    xParent->setColor(COLOR::BLACK);
+                    w->getNextLeft()->setColor(COLOR::BLACK);
+                    rightRotate(xParent);
+                    x = head_;
+                    xParent = nullptr;
+                }
+            }
+        }
+    }
+    x->setColor(COLOR::BLACK);
 }
 
 
