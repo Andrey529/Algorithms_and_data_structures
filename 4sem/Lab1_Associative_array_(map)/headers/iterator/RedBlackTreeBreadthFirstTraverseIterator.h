@@ -2,14 +2,14 @@
 #define LAB1_ASSOCIATIVE_ARRAY__MAP__REDBLACKTREEBREADTHFIRSTTRAVERSEITERATOR_H
 
 
-#include "iterator.h"
+#include "Iterator.h"
 #include "../Queue/Queue.h"
-#include "../redBlackTree/elemOfRedBlackTree.h"
+#include "../RedBlackTree/ElemOfRedBlackTree.h"
 
 template<class T_key, class T_value>
-class RedBlackTreeBreadthFirstTraverseIterator : public iterator<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>{
+class RedBlackTreeBreadthFirstTraverseIterator : public Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>{
 private:
-    using elemType = std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>;
+    using elemType = std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>;
     using queueType = std::unique_ptr<Queue<elemType>>;
     elemType current_;
     queueType queue_;

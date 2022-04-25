@@ -1,26 +1,9 @@
 #include <iostream>
 
-#include "headers/associativeArray/associativeArray.h"
-
-#include <map>
-
-/**
- * -------- 1) function repair tree after insert
- * -------- 2) function remove
- * -------- 3) function repair tree after remove
- * -------- 4) check in function insert when new key is already been in tree
- *
- * 5) unit-tests
- *
- * 6) fix memory liks in iterators
- * 7) do good iteartor for the tree
- *      legacy random access iterator
- * 8) function find be able to return iterator on find element
- */
-
+#include "headers/AssociativeArray/AssociativeArray.h"
 
 int main() {
-    associativeArray<int, int> map(10, 10);
+    AssociativeArray<int, int> map(10, 10);
 
     map.insert(13, 13);
     map.insert(8, 8);
@@ -41,7 +24,7 @@ int main() {
       3    5       11
     */
 
-    std::cout << "Breadth-first iterator:" << std::endl;
+    std::cout << "Breadth-first Iterator:" << std::endl;
     auto it = map.createDftIterator();
     while (it->hasNext()) {
         std::cout << it->next()->getKey() << ' ';

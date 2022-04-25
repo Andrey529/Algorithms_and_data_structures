@@ -8,12 +8,12 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFir
         RedBlackTreeBreadthFirstTraverseIterator::elemType start) {
 
     current_ = start;
-    queue_ = std::make_unique<Queue<std::shared_ptr<elemOfRedBlackTree<T_key, T_value>>>>();
+    queue_ = std::make_unique<Queue<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>>();
     queue_->push(current_);
 
-//    std::unique_ptr<Queue<std::shared_ptr<elemOfRedBlackTree<int, int>>>> queue;
-//    queue = std::make_unique<Queue<std::shared_ptr<elemOfRedBlackTree<int, int>>>>();
-//    queue->push(std::make_shared<elemOfRedBlackTree<int, int>>(1,1,COLOR::RED));
+//    std::unique_ptr<Queue<std::shared_ptr<ElemOfRedBlackTree<int, int>>>> queue;
+//    queue = std::make_unique<Queue<std::shared_ptr<ElemOfRedBlackTree<int, int>>>>();
+//    queue->push(std::make_shared<ElemOfRedBlackTree<int, int>>(1,1,COLOR::RED));
 
 }
 
@@ -60,7 +60,7 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::next() {
     return current_;
 
 //    return *(current_.get()); // return current
-//    return elemOfRedBlackTree<T_key, T_value>();
+//    return ElemOfRedBlackTree<T_key, T_value>();
 }
 
 
