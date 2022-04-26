@@ -11,10 +11,6 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::RedBlackTreeBreadthFir
     queue_ = std::make_unique<Queue<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>>();
     queue_->push(current_);
 
-//    std::unique_ptr<Queue<std::shared_ptr<ElemOfRedBlackTree<int, int>>>> queue;
-//    queue = std::make_unique<Queue<std::shared_ptr<ElemOfRedBlackTree<int, int>>>>();
-//    queue->push(std::make_shared<ElemOfRedBlackTree<int, int>>(1,1,COLOR::RED));
-
 }
 
 template<class T_key, class T_value>
@@ -45,22 +41,12 @@ RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>::next() {
     current_ = queue_->getFront().lock()->data_;
     queue_->pop();  // delete current in queue
 
-//    if (current_->isNil()) {
-//        std::cout << "Nil";
-//    }
-
     if (!(current_->getNextLeft()->isNil()))  // set in queue childs of current
         queue_->push(current_->getNextLeft());
     if (!(current_->getNextRight()->isNil()))
         queue_->push(current_->getNextRight());
 
-//    if (current_->getNextLeft() != nullptr)
-//    if (current_->getNextRight() != nullptr)
-
     return current_;
-
-//    return *(current_.get()); // return current
-//    return ElemOfRedBlackTree<T_key, T_value>();
 }
 
 
