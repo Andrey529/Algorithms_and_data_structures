@@ -3,18 +3,20 @@
 
 #include <memory>
 #include <iostream>
+#include "../Iterator/Iterator.h"
 
 template<class T>
 class List{
 private:
+
     struct ElemOfList{
         T data_;
         std::shared_ptr<ElemOfList> nextElem_;
         explicit ElemOfList(const T &data) : data_(data), nextElem_(nullptr) { }
         explicit ElemOfList(T &&data) : data_(std::move(data)), nextElem_(nullptr) { }
     };
-
-    std::shared_ptr<ElemOfList> head_;
+    using elemType = std::shared_ptr<ElemOfList>;
+    elemType head_;
 
 public:
     List() : head_() { }
@@ -51,7 +53,36 @@ public:
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
 
+    class ListIterator;
+    ListIterator begin();
+    ListIterator end();
+
+    class ListIterator {
+    private:
+        elemType current_;
+
+    public:
+        ListIterator() noexcept : current_ (nullptr) { }
+        explicit ListIterator(const elemType pNode) noexcept : current_ (pNode) { }
+        ListIterator(const ListIterator &other) : current_ (other.current_) { }
+//        ListIterator(const ListIterator &&other) noexcept : current_ (std::move(other.current_)) { }
+
+        ListIterator& operator=(const ListIterator &other);
+//        ListIterator& operator=(const ListIterator &&other) noexcept {
+//            current_ = std::move(other.current_);
+//            return *this;
+//        }
+
+        ListIterator& operator=(elemType pNode);
+
+        ListIterator& operator++();  // Prefix ++ overload
+        ListIterator operator++(int); // Postfix ++ overload
+        bool operator!=(const ListIterator& iterator);
+        T& operator*();
+    };
+
 };
+
 
 #include "../../src/List/List.cpp"
 

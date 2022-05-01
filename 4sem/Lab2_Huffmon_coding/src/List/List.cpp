@@ -2,6 +2,7 @@
 #define LAB2_HUFFMON_CODING_LIST_CPP
 
 #include "../../headers/List/List.h"
+//#include "../../headers/Iterator/ListIterator.h"
 
 template<class T>
 bool List<T>::isEmpty() const {
@@ -261,6 +262,56 @@ std::ostream &operator<<(std::ostream &out, const List<U> &list) {
         i++;
     }
     return out;
+}
+
+template<class T>
+typename List<T>::ListIterator List<T>::begin() {
+    if (head_ == nullptr)
+        throw std::logic_error("An Iterator cannot be created because there is no element in the list.");
+    return ListIterator(head_);
+}
+
+template<class T>
+typename List<T>::ListIterator List<T>::end() {
+    if (head_ == nullptr)
+        throw std::logic_error("An Iterator cannot be created because there is no element in the list.");
+    return ListIterator(nullptr);
+}
+
+template<class T>
+typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
+    current_ = other.current_;
+    return *this;
+}
+
+template<class T>
+typename List<T>::ListIterator &List<T>::ListIterator::operator=(List::elemType pNode) {
+    current_ = pNode;
+    return *this;
+}
+
+template<class T>
+typename List<T>::ListIterator &List<T>::ListIterator::operator++() {
+    if (current_)
+        current_ = current_->nextElem_;
+    return *this;
+}
+
+template<class T>
+typename List<T>::ListIterator List<T>::ListIterator::operator++(int) {
+    ListIterator iterator = *this;
+    ++*this;
+    return iterator;
+}
+
+template<class T>
+bool List<T>::ListIterator::operator!=(const List::ListIterator &iterator) {
+    return current_ != iterator.current_;
+}
+
+template<class T>
+T& List<T>::ListIterator::operator*() {
+    return current_->data_;
 }
 
 #endif //LAB2_HUFFMON_CODING_LIST_CPP
