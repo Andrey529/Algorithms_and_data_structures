@@ -10,5 +10,9 @@ add_executable(Lab2_Huffmon_coding
         headers/Iterator/Iterator.h
         headers/Iterator/RedBlackTreeBreadthFirstTraverseIterator.h
         src/Iterator/RedBlackTreeBreadthFirstTraverseIterator.cpp
-        headers/List/List.h src/List/List.cpp headers/Queue/Queue.h src/Queue/Queue.cpp headers/RedBlackTree/RedBlackTree.h src/RedBlackTree/RedBlackTree.cpp headers/RedBlackTree/ElemOfRedBlackTree.h src/RedBlackTree/ElemOfRedBlackTree.cpp)
+        headers/List/List.h src/List/List.cpp
+        headers/Queue/Queue.h src/Queue/Queue.cpp
+        headers/RedBlackTree/RedBlackTree.h src/RedBlackTree/RedBlackTree.cpp
+        headers/RedBlackTree/ElemOfRedBlackTree.h src/RedBlackTree/ElemOfRedBlackTree.cpp
+        headers/HuffmanCode/HuffmanCode.h src/HuffmanCode/HuffmanCode.cpp headers/HuffmanCode/HuffmanTree.h)
 add_subdirectory(Google_tests)

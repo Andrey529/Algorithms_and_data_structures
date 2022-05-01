@@ -53,6 +53,9 @@ public:
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
 
+    template<typename comparator = std::less<T>>
+    void sort();
+
     class ListIterator;
     ListIterator begin();
     ListIterator end();
