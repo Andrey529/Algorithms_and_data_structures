@@ -165,7 +165,7 @@ template<class T_key, class T_value, class comparator>
 std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>
 RedBlackTree<T_key, T_value, comparator>::find(const T_key &key) const {
     if (isEmpty())
-        throw std::logic_error("Cannot find element with this key because there is no element in the tree.");
+        return std::make_shared<ElemOfRedBlackTree<T_key, T_value>>();
 
     auto elem = head_;
     comparator cmp = comparator{};
