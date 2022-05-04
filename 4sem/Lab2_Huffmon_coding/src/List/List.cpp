@@ -257,7 +257,7 @@ T &List<T>::at(size_t index) {
 template<typename U>
 std::ostream &operator<<(std::ostream &out, const List<U> &list) {
     int i = 1;
-    for (size_t index = 0; index < list.getSize(); index++){
+    for (size_t index = 0; index < list.getSize(); index++) {
         out << i << " element: number = " << list.at(index) << std::endl;
         i++;
     }
@@ -276,6 +276,97 @@ typename List<T>::ListIterator List<T>::end() {
     if (head_ == nullptr)
         throw std::logic_error("An Iterator cannot be created because there is no element in the list.");
     return ListIterator(nullptr);
+}
+
+template<class T>
+template<typename Comparator>
+void List<T>::sort(Comparator comparator) {
+    if (isEmpty()) return;
+    if (head_->nextElem_ == nullptr) return;
+
+    elemType current = head_;
+    elemType index;
+
+    int size = getSize() - 1;
+    while (size--) {
+        elemType prev = nullptr;
+        elemType cur = head_;
+        while (cur->nextElem_ != nullptr) {
+            if (comparator(cur->nextElem_->data_, cur->data_)) {
+                if (prev == nullptr) {
+                    //first node
+                    auto nxt = cur->nextElem_;
+                    cur->nextElem_ = nxt->nextElem_;
+                    nxt->nextElem_ = cur;
+                    prev = nxt;
+                    head_ = prev;
+                } else {
+                    auto nxt = cur->nextElem_;
+                    prev->nextElem_ = nxt;
+                    cur->nextElem_ = nxt->nextElem_;
+                    nxt->nextElem_ = cur;
+                    prev = nxt;
+                }
+            } else {
+                prev = cur;
+                cur = cur->nextElem_;
+            }
+        }
+    }
+
+}
+
+template<class T>
+typename List<T>::elemType List<T>::getPrevious(List::elemType elem) {
+    if (elem == head_) {
+        return nullptr;
+    }
+    auto tmp = head_;
+    while (tmp->nextElem_ != nullptr) {
+        if (tmp->nextElem_ == elem) {
+            return tmp;
+        }
+        tmp = tmp->nextElem_;
+    }
+    return nullptr;
+}
+
+template<class T>
+void List<T>::swap(elemType elem1, elemType elem2) {
+    if (elem1 == head_) {
+        if (elem1->nextElem_ == elem2) { // elem1 elem2 . . . . .
+            head_ = elem2;
+            elem1->nextElem_ = elem2->nextElem_;
+            elem2->nextElem_ = elem1;
+        } else { // elem1 . . . . . . elem2 . . . .
+            auto elem2Prev = getPrevious(elem2);
+            auto elem2Next = elem2->nextElem_;
+            head_ = elem2;
+            elem2->nextElem_ = elem1->nextElem_;
+
+            elem2Prev->nextElem_ = elem1;
+            elem1->nextElem_ = elem2Next;
+        }
+
+    } else {
+        if (elem1->nextElem_ == elem2) { // . . . . elem1 elem2 . . . . .
+            auto elem1Prev = getPrevious(elem1);
+            elem1Prev->nextElem_ = elem2;
+            elem1->nextElem_ = elem2->nextElem_;
+            elem2->nextElem_ = elem1;
+        } else { // . . . . . . elem1 . . . . . . elem2 . . . .
+            auto elem1Prev = getPrevious(elem1);
+            auto elem1Next = elem1->nextElem_;
+            auto elem2Prev = getPrevious(elem2);
+            auto elem2Next = elem2->nextElem_;
+
+            elem1Prev->nextElem_ = elem2;
+            elem2->nextElem_ = elem1Next;
+
+            elem2Prev->nextElem_ = elem1;
+            elem1->nextElem_ = elem2Next;
+        }
+    }
 }
 
 template<class T>
@@ -310,7 +401,7 @@ bool List<T>::ListIterator::operator!=(const List::ListIterator &iterator) {
 }
 
 template<class T>
-T& List<T>::ListIterator::operator*() {
+T &List<T>::ListIterator::operator*() {
     return current_->data_;
 }
 

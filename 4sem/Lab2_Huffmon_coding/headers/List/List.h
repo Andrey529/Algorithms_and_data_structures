@@ -18,6 +18,8 @@ private:
     using elemType = std::shared_ptr<ElemOfList>;
     elemType head_;
 
+    elemType getPrevious(elemType elem);
+    void swap(elemType elem1, elemType elem2);
 public:
     List() : head_() { }
     explicit List(const T &data);
@@ -53,8 +55,8 @@ public:
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
 
-    template<typename comparator = std::less<T>>
-    void sort();
+    template<typename Comparator = std::less<T>>
+    void sort(Comparator comparator = std::less<T>());
 
     class ListIterator;
     ListIterator begin();
