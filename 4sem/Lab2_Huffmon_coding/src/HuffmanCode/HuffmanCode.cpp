@@ -1,6 +1,6 @@
 #include "../../headers/HuffmanCode/HuffmanCode.h"
 
-std::string &HuffmanCode::getString() {
+std::string &HuffmanCode::getSourceString() {
     return string_;
 }
 
@@ -19,5 +19,15 @@ void HuffmanCode::calculateSymbolsFrequency() {
 }
 
 AssociativeArray<char, size_t> &HuffmanCode::getSymbolsFrequency() {
+    calculateSymbolsFrequency();
     return symbolsFrequency_;
 }
+
+int HuffmanCode::getCountBytesByTheSourceString() const {
+    return string_.size() * 8;
+}
+
+int HuffmanCode::getCountBytesByTheEncodedString() const {
+    return encodedString_.size() * 8;
+}
+
