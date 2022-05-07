@@ -50,7 +50,7 @@ public:
 //    void set(size_t index, T &&data);
 
 //    void remove(size_t index); // deleting an element by index
-//    void clear(); // removing all list elements
+    void clear(); // removing all list elements
 
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<

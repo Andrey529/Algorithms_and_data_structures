@@ -370,6 +370,11 @@ void List<T>::swap(elemType elem1, elemType elem2) {
 }
 
 template<class T>
+void List<T>::clear() {
+    head_ = nullptr;
+}
+
+template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
     current_ = other.current_;
     return *this;
