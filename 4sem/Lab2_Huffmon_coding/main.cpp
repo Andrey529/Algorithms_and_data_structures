@@ -1,11 +1,6 @@
 #include <iostream>
-#include "headers/AssociativeArray/AssociativeArray.h"
 #include <string>
 #include "headers/HuffmanCode/HuffmanCode.h"
-
-#include <forward_list>
-
-#include "headers/List/List.h"
 
 int main() {
 
@@ -13,11 +8,18 @@ int main() {
     std::cin >> string;
 
     HuffmanCode code(string);
+
+    std::cout << code.getSourceString() << std::endl;
+
+    std::cout << code.getCountBytesByTheSourceString() << std::endl;
+
+//    code.clear();
+
+//    code.setSourceString("6666667777777");
+
 //    code.getSymbolsFrequency().print();
 
 //    std::cout << code.getCountBytesByTheSourceString() << std::endl;
-
-
 
     return 0;
 }

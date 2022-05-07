@@ -17,9 +17,8 @@ private:
         elemType nextLeft_;
         elemType nextRight_;
 
-//        ElemOfHuffmanTree() : symbol_(), frequency_() { }
-        ElemOfHuffmanTree(const char &symbol, const size_t &frequency, elemType parent = nullptr,
-                          elemType nextLeft = nullptr, elemType nextRight = nullptr)
+        ElemOfHuffmanTree(const char &symbol, const size_t &frequency, const elemType &parent = nullptr,
+                          const elemType &nextLeft = nullptr, const elemType &nextRight = nullptr)
                           : symbol_(symbol), frequency_(frequency), parent_(parent), nextLeft_(nextLeft), nextRight_(nextRight) {}
 
         bool operator<(const ElemOfHuffmanTree &elem) const {
@@ -42,36 +41,11 @@ private:
 public:
     HuffmanTree() : head_(), leafsList_() {}
 
-    void buildTree(AssociativeArray<char, size_t> &symbolsFrequency) {
-        auto it = symbolsFrequency.createDftIterator();
-        while (it->hasNext()) {
-            auto symbolWithFrequency = it->next();
-            elemType newElem = std::make_shared<ElemOfHuffmanTree>(symbolWithFrequency->getKey(),
-                                                                   symbolWithFrequency->getValue());
-            leafsList_.pushBack(newElem);
-        }
-        leafsList_.sort(ElemOfHuffmanTreeComparator());
-
-//        auto listSize = leafsList_.getSize();
-        bool flagFirstEntry = true;
-        while (!leafsList_.isEmpty()) {
-            auto elem0 = leafsList_.at(0);
-            auto elem1 = leafsList_.at(1);
-//            if (flagFirstEntry) {
-//                auto
-//            } else {
-//
-//            }
-
-        }
-
-//        for (int i = 0; i < listSize; ++i) {
-//            auto elem = leafsList_.at(i);
-//            std::cout << elem->symbol_ << ' ' << elem->frequency_ << std::endl;
-//        }
-
-//        std::cout << leafsList_;
-    }
+    void buildTree(AssociativeArray<char, size_t> &symbolsFrequency);
+    void clear();
 };
+
+
+
 
 #endif //LAB2_HUFFMON_CODING_HUFFMANTREE_H

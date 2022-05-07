@@ -11,37 +11,40 @@ private:
     std::string string_;
     std::string encodedString_;
     AssociativeArray<char, size_t> symbolsFrequency_;
-    HuffmanTree huffmanTree;
-    void calculateSymbolsFrequency();
+    HuffmanTree huffmanTree_;
 
+    void calculateSymbolsFrequency();
+    AssociativeArray<char, size_t> &getSymbolsFrequency();
+//    std::string constructingTheEncodedString();
 public:
     HuffmanCode() = default;
     explicit HuffmanCode(const std::string &str) : string_(str) {
         calculateSymbolsFrequency();
-        huffmanTree.buildTree(symbolsFrequency_);
+        huffmanTree_.buildTree(symbolsFrequency_);
     }
     explicit HuffmanCode(std::string &&str) : string_(std::move(str)), encodedString_() {
         calculateSymbolsFrequency();
-        huffmanTree.buildTree(symbolsFrequency_);
+        huffmanTree_.buildTree(symbolsFrequency_);
     }
 
     void setSourceString(const std::string &str) {
         string_ = str;
         calculateSymbolsFrequency();
-        huffmanTree.buildTree(symbolsFrequency_);
+        huffmanTree_.buildTree(symbolsFrequency_);
     }
 
     void setSourceString(std::string &&str) {
         string_ = str;
         calculateSymbolsFrequency();
-        huffmanTree.buildTree(symbolsFrequency_);
+        huffmanTree_.buildTree(symbolsFrequency_);
     }
 
     std::string &getSourceString();
     std::string &getEncodedString();
-    AssociativeArray<char, size_t> &getSymbolsFrequency();
+    HuffmanTree &getHuffmanTree();
     int getCountBytesByTheSourceString() const;
     int getCountBytesByTheEncodedString() const;
+    void clear();
 
 };
 
