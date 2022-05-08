@@ -60,11 +60,52 @@ Queue<T>::Queue(Queue<T> &&other) noexcept {
 }
 
 template<class T>
+Queue<T> &Queue<T>::operator=(const Queue<T> &other) &{
+    try {
+        if (this == &other) {
+            return *this;
+        }
+        if (other.isEmpty()) {
+            head_ = nullptr;
+            return *this;
+        } else {
+            head_ = std::make_shared<ElemOfQueue>(other.head_->data_);
+
+            std::shared_ptr<ElemOfQueue> tempForNextElem = head_;
+            std::shared_ptr<ElemOfQueue> otherElem = other.head_->nextElem_;
+
+            while (otherElem != nullptr) {
+                tempForNextElem->nextElem_ = std::make_shared<ElemOfQueue>(otherElem->data_);
+
+                tempForNextElem = tempForNextElem->nextElem_;
+                otherElem = otherElem->nextElem_;
+            }
+            tempForNextElem->nextElem_ = nullptr;
+            return *this;
+        }
+
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T>
+Queue<T> &Queue<T>::operator=(Queue<T> &&other) & noexcept {
+    if (this == &other) {
+        return *this;
+    }
+    head_ = other.head_;
+    other.~Queue();
+    return *this;
+}
+
+template<class T>
 void Queue<T>::push(const T &data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfQueue>(data);
-        } else{
+        } else {
 
             auto temp = head_;
             while (temp->nextElem_ != nullptr) {
@@ -83,7 +124,7 @@ void Queue<T>::push(T &&data) {
     try {
         if (this->isEmpty()) {
             head_ = std::make_shared<ElemOfQueue>(std::move(data));
-        } else{
+        } else {
             auto temp = head_;
             while (temp->nextElem_ != nullptr) {
                 temp = temp->nextElem_;
@@ -127,5 +168,6 @@ size_t Queue<T>::getSize() const {
     }
     return size;
 }
+
 
 #endif //LAB2_HUFFMON_CODING_QUEUE_CPP

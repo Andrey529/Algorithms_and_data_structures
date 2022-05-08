@@ -25,6 +25,10 @@ public:
     Queue(const Queue<T>& other);
     Queue(Queue<T>&& other) noexcept ;
 
+    Queue& operator=(const Queue<T> &other) & ;
+    Queue& operator=(Queue<T> &&other) & noexcept;
+
+
     void push(const T& data);
     void push(T&& data);
     void pop();
