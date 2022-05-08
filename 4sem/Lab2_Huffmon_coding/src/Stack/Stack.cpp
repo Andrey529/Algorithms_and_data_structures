@@ -163,6 +163,16 @@ size_t Stack<T>::getSize() const {
     return size;
 }
 
+template<class T>
+List<T> Stack<T>::getAllData() {
+    List<T> list;
+    auto elem = head_;
+    while (elem != nullptr) {
+        list.pushBack(elem->data_);
+        elem = elem->nextElem_;
+    }
+    return list;
+}
 
 
 #endif //LAB2_HUFFMON_CODING_STACK_CPP

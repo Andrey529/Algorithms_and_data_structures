@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <memory>
 #include <iostream>
+#include "../List/List.h"
 
 template<class T>
 class Stack{
@@ -35,6 +36,7 @@ public:
     std::weak_ptr<ElemOfStack> getBack();
     bool isEmpty() const;
     size_t getSize() const;
+    List<T> getAllData();
     ~Stack() = default;
 };
 
