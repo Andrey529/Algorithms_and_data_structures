@@ -68,6 +68,10 @@ public:
      * Prints {key : value} pairs to the console
      */
     void print();
+
+    template<class Key, class Value>
+    friend std::ostream& operator<< (std::ostream &out, AssociativeArray<T_key, T_value> &map); // overloading operator <<
+
 };
 
 #include "../../src/AssociativeArray/AssociativeArray.cpp"

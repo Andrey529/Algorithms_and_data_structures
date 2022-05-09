@@ -77,5 +77,16 @@ AssociativeArray<T_key, T_value, comparator>::createDftIterator() {
     return rbTree_->createDftIterator();
 }
 
+template<class Key, class Value>
+std::ostream &operator<<(std::ostream &out, AssociativeArray<Key, Value> &map) {
+    auto it = map.createDftIterator();
+    while (it->hasNext()) {
+        auto elem = it->next();
+        out << elem->getKey() << ' ' << elem->getValue() << std::endl;
+    }
+    out << std::endl << std::endl;
+    return out;
+}
+
 
 #endif //LAB2_HUFFMON_CODING_ASSOCIATIVEARRAY_CPP
