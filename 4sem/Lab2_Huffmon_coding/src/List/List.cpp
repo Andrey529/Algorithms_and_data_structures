@@ -258,11 +258,12 @@ template<typename U>
 std::ostream &operator<<(std::ostream &out, const List<U> &list) {
     int i = 1;
     for (size_t index = 0; index < list.getSize(); index++) {
-        out << i << " element: number = " << list.at(index) << std::endl;
+        out << list.at(index);
         i++;
     }
     return out;
 }
+
 
 template<class T>
 typename List<T>::ListIterator List<T>::begin() {
@@ -393,6 +394,7 @@ void List<T>::remove(size_t index) {
 
     prevElem->nextElem_ = prevElem->nextElem_->nextElem_;
 }
+
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
