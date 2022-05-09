@@ -28,7 +28,7 @@ public:
                           const bool &haveBeenVisited, const elemType &parent = nullptr,
                           const elemType &nextLeft = nullptr, const elemType &nextRight = nullptr)
                 : symbol_(symbol), frequency_(frequency), typeElem_(typeElem), haveBeenVisited_(haveBeenVisited),
-                parent_(parent), nextLeft_(nextLeft), nextRight_(nextRight) {}
+                  parent_(parent), nextLeft_(nextLeft), nextRight_(nextRight) {}
 
         bool operator<(const ElemOfHuffmanTree &elem) const {
             return frequency_ < elem.frequency_;
@@ -39,15 +39,15 @@ public:
     struct ElemOfHuffmanTreeComparator {
         bool
         operator()(const std::shared_ptr<ElemOfHuffmanTree> &elem1, const std::shared_ptr<ElemOfHuffmanTree> &elem2) {
-            if (elem1->frequency_ < elem2->frequency_)
+
+            if ((elem1->typeElem_ == TypeElem::DEFAULT) && (elem2->typeElem_ == TypeElem::SPECIAL)) {
+                return false;
+            } else if (elem1->frequency_ < elem2->frequency_) {
                 return true;
-            else if (elem1->frequency_ > elem2->frequency_) {
+            } else if (elem1->frequency_ > elem2->frequency_) {
                 return false;
             } else {
-                if ((elem1->typeElem_ == TypeElem::DEFAULT) && (elem2->typeElem_ == TypeElem::SPECIAL))
-                    return false;
-                else
-                    return true;
+                return true;
             }
         }
     };
@@ -55,7 +55,7 @@ public:
     using elemType = std::shared_ptr<ElemOfHuffmanTree>;
     elemType head_;
     int size;
-public:
+
     HuffmanTree() : head_(), size(0) {}
 
     void buildTree(AssociativeArray<char, size_t> &symbolsFrequency);

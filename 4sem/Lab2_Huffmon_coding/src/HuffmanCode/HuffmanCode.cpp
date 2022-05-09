@@ -28,12 +28,12 @@ AssociativeArray<char, size_t> &HuffmanCode::getSymbolsFrequency() {
     return symbolsFrequency_;
 }
 
-HuffmanTree &HuffmanCode::getHuffmanTree() {
-    if (string_.empty()) {
-        throw std::logic_error("Source string to encoding is empty.");
-    }
-    return huffmanTree_;
-}
+//HuffmanTree &HuffmanCode::getHuffmanTree() {
+//    if (string_.empty()) {
+//        throw std::logic_error("Source string to encoding is empty.");
+//    }
+//    return huffmanTree_;
+//}
 
 AssociativeArray<char, List<bool>> &HuffmanCode::getTable() {
     if (string_.empty()) {
@@ -42,12 +42,12 @@ AssociativeArray<char, List<bool>> &HuffmanCode::getTable() {
     return table_;
 }
 
-int HuffmanCode::getCountBytesByTheSourceString() const {
-    return string_.size() * 8;
+size_t HuffmanCode::getCountBytesByTheSourceString() const {
+    return string_.size() * sizeof(char) * 8;
 }
 
-int HuffmanCode::getCountBytesByTheEncodedString() const {
-    return encodedString_.size() * 8;
+size_t HuffmanCode::getCountBytesByTheEncodedString() const {
+    return encodedString_.size() * sizeof(char);
 }
 
 void HuffmanCode::clear() {
@@ -55,11 +55,12 @@ void HuffmanCode::clear() {
     encodedString_ = "";
     symbolsFrequency_.clear();
     huffmanTree_.clear();
+    table_.clear();
 }
 
 double HuffmanCode::getCompressionRatio() {
     if (!string_.empty() && !encodedString_.empty())
-        return string_.size() / encodedString_.size();
+        return static_cast<double>(this->getCountBytesByTheSourceString()) / static_cast<double>(this->getCountBytesByTheEncodedString());
     else
         throw std::logic_error("It is impossible to calculate the compression ratio.");
 }
@@ -72,32 +73,23 @@ void HuffmanCode::constructingTheTable() {
         return;
     }
 
-    Stack<bool> bitStack;
-    int visited = 1;
-    int mustVisit = huffmanTree_.size;
+    List<bool> bitList;
     while (true) {
-        if (current->nextLeft_ != nullptr) {
-            if (!current->nextLeft_->haveBeenVisited_) {
-                bitStack.push(true);
-                current = current->nextLeft_;
-                ++visited;
-            }
-        } else if (current->nextRight_ != nullptr) {
-            if (!current->nextRight_->haveBeenVisited_) {
-                bitStack.push(false);
-                current = current->nextRight_;
-                ++visited;
-            }
+        if (current->nextLeft_ != nullptr && !current->nextLeft_->haveBeenVisited_) {
+            bitList.pushBack(true);
+            current = current->nextLeft_;
+        } else if (current->nextRight_ != nullptr && !current->nextRight_->haveBeenVisited_) {
+            bitList.pushBack(false);
+            current = current->nextRight_;
         } else {
-            table_.insert(current->symbol_, bitStack.getAllData());
-            bitStack.pop();
-            current->haveBeenVisited_ = true;
-            current = current->parent_;
-            if (visited == mustVisit) {
-                break;
+            if (current->typeElem_ == HuffmanTree::TypeElem::DEFAULT) {
+                table_.insert(current->symbol_, bitList);
             }
+            current->haveBeenVisited_ = true;
+            if (current == huffmanTree_.head_) break;
+            bitList.popBack();
+            current = current->parent_;
         }
-
     }
 
 }

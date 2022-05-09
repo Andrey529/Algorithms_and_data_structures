@@ -34,7 +34,8 @@ public:
         constructingTheEncodedString();
     }
 
-    void setSourceString(const std::string &str) {
+    void encode(const std::string &str) {
+        clear();
         string_ = str;
         calculateSymbolsFrequency();
         huffmanTree_.buildTree(symbolsFrequency_);
@@ -42,20 +43,37 @@ public:
         constructingTheEncodedString();
     }
 
-    void setSourceString(std::string &&str) {
+    void encode(std::string &&str) {
+        clear();
         string_ = str;
         calculateSymbolsFrequency();
         huffmanTree_.buildTree(symbolsFrequency_);
         constructingTheTable();
         constructingTheEncodedString();
     }
+
+    void decode(const std::string &str, const AssociativeArray<char, List<bool>> &table) {
+        clear();
+//        table_ = table;
+        encodedString_ = str;
+
+        size_t index = 0;
+        while (true) {
+
+        }
+    }
+
+    void decode(std::string &&str) {
+
+    }
+
 
     std::string &getSourceString();
     std::string &getEncodedString();
-    HuffmanTree &getHuffmanTree();
+//    HuffmanTree &getHuffmanTree();
     AssociativeArray<char, List<bool>> &getTable();
-    int getCountBytesByTheSourceString() const;
-    int getCountBytesByTheEncodedString() const;
+    size_t getCountBytesByTheSourceString() const;
+    size_t getCountBytesByTheEncodedString() const;
     void clear();
     double getCompressionRatio();
 

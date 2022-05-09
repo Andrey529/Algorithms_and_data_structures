@@ -2,7 +2,6 @@
 #include <string>
 #include "headers/HuffmanCode/HuffmanCode.h"
 
-
 int main() {
 
     std::string string;
@@ -11,6 +10,13 @@ int main() {
     HuffmanCode code(string);
     std::cout << code.getEncodedString() << std::endl;
 
+    std::string newString;
+    std::cin >> newString;
+    code.encode(newString);
+    std::cout << code.getEncodedString() << std::endl;
+
+    std::cout << code.getTable() << std::endl;
+
 //    code.getTable();
 //    std::cout << code.getSourceString() << std::endl;
 //
@@ -18,7 +24,7 @@ int main() {
 
 //    code.clear();
 
-//    code.setSourceString("6666667777777");
+//    code.encode("6666667777777");
 
 //    code.getSymbolsFrequency().print();
 
