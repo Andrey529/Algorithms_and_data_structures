@@ -49,7 +49,7 @@ public:
 //    void set(size_t index, const T &data); // replacing the element by index with the passed element
 //    void set(size_t index, T &&data);
 
-//    void remove(size_t index); // deleting an element by index
+    void remove(size_t index); // deleting an element by index
     void clear(); // removing all list elements
 
     template<typename U>

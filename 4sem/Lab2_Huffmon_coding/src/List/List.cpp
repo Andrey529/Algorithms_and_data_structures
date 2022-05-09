@@ -375,6 +375,26 @@ void List<T>::clear() {
 }
 
 template<class T>
+void List<T>::remove(size_t index) {
+    if (head_ == nullptr) throw std::invalid_argument("List already empty");
+    if (index > this->getSize()-1) {
+        throw std::invalid_argument("Does not have element with that index, function remove()");
+    }
+
+    if (index == 0) {
+        head_ = head_->nextElem_;
+        return;
+    }
+
+    auto prevElem = head_;
+    for (int i = 0; i < index-1; ++i) {
+        prevElem = prevElem->nextElem_;
+    }
+
+    prevElem->nextElem_ = prevElem->nextElem_->nextElem_;
+}
+
+template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
     current_ = other.current_;
     return *this;
