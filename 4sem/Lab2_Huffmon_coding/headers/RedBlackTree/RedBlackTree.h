@@ -19,6 +19,7 @@ private:
 public:
 
     RedBlackTree(const T_key &key, const T_value &value);
+    explicit RedBlackTree(RedBlackTree<T_key, T_value> &other);
     RedBlackTree() : head_(nullptr) {}
     ~RedBlackTree() = default;
 
@@ -38,7 +39,7 @@ public:
     /**
      * Returns an iterator to width
      */
-    std::unique_ptr<Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
+    std::unique_ptr<Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>> createBftIterator();
 
     /**
      * Removes the element with key = key

@@ -10,6 +10,8 @@ private:
 public:
     AssociativeArray();
     AssociativeArray(const T_key &key, const T_value &value);
+    explicit AssociativeArray(const AssociativeArray<T_key, T_value> &other);
+    AssociativeArray& operator=(const AssociativeArray<T_key, T_value> &other) & ;
     ~AssociativeArray() = default;
 
     /**
@@ -28,7 +30,7 @@ public:
     /**
      * Returns an Iterator to width
      */
-    std::unique_ptr<Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>> createDftIterator();
+    std::unique_ptr<Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>> createBftIterator();
 
     /**
      * Removes the element with key = key

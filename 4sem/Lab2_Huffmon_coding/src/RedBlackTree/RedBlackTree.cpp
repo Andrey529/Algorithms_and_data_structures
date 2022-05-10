@@ -24,6 +24,38 @@ RedBlackTree<T_key, T_value, comparator>::RedBlackTree(const T_key &key,
 }
 
 template<class T_key, class T_value, class comparator>
+RedBlackTree<T_key, T_value, comparator>::RedBlackTree(RedBlackTree<T_key, T_value> &other) {
+    try {
+        T_key key = other.head_->getKey();
+        T_value value = other.head_->getValue();
+        head_ = std::make_shared<ElemOfRedBlackTree<T_key, T_value>>(key, value, COLOR::BLACK);
+
+        auto nilLeft = std::make_shared<ElemOfRedBlackTree<T_key, T_value>>(head_);
+        auto nilRight = std::make_shared<ElemOfRedBlackTree<T_key, T_value>>(head_);
+
+        head_->setNextLeft(std::move(nilLeft));
+        head_->setNextRight(std::move(nilRight));
+
+        auto firstHead = other.head_;
+        auto it = other.createBftIterator();
+        while (it->hasNext()) {
+            auto elem = it->next();
+            if (elem->getKey() == firstHead->getKey()) continue;
+            auto elemKey = elem->getKey();
+            auto elemValue = elem->getValue();
+            this->insert(elemKey, elemValue);
+        }
+
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+    catch (const std::logic_error &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T_key, class T_value, class comparator>
 bool RedBlackTree<T_key, T_value, comparator>::isEmpty() const {
     return head_ == nullptr;
 }
@@ -125,7 +157,7 @@ void RedBlackTree<T_key, T_value, comparator>::clear() {
 
 template<class T_key, class T_value, class comparator>
 std::unique_ptr<Iterator<std::shared_ptr<ElemOfRedBlackTree<T_key, T_value>>>>
-RedBlackTree<T_key, T_value, comparator>::createDftIterator() {
+RedBlackTree<T_key, T_value, comparator>::createBftIterator() {
     if (head_ == nullptr)
         throw std::logic_error("An Iterator cannot be created because there is no element in the tree.");
     return std::make_unique<RedBlackTreeBreadthFirstTraverseIterator<T_key, T_value>>(head_);
@@ -134,7 +166,7 @@ RedBlackTree<T_key, T_value, comparator>::createDftIterator() {
 template<class T_key, class T_value, class comparator>
 List<T_key> RedBlackTree<T_key, T_value, comparator>::getKeys() {
 
-    auto it = createDftIterator();
+    auto it = createBftIterator();
     List<T_key> list;
     while (it->hasNext()) {
         list.pushBack(it->next()->getKey());
@@ -144,7 +176,7 @@ List<T_key> RedBlackTree<T_key, T_value, comparator>::getKeys() {
 
 template<class T_key, class T_value, class comparator>
 List<T_value> RedBlackTree<T_key, T_value, comparator>::getValues() {
-    auto it = createDftIterator();
+    auto it = createBftIterator();
     List<T_key> list;
     while (it->hasNext()) {
         list.pushBack(it->next()->getValue());
@@ -154,7 +186,7 @@ List<T_value> RedBlackTree<T_key, T_value, comparator>::getValues() {
 
 template<class T_key, class T_value, class comparator>
 void RedBlackTree<T_key, T_value, comparator>::print() {
-    auto it = createDftIterator();
+    auto it = createBftIterator();
     while (it->hasNext()) {
         auto elem = it->next();
         std::cout << "{" << elem->getKey() << ": " << elem->getValue() << "}\n";
@@ -467,5 +499,7 @@ void RedBlackTree<T_key, T_value, comparator>::repairTreeAfterRemove(
     }
     x->setColor(COLOR::BLACK);
 }
+
+
 
 #endif //LAB2_HUFFMON_CODING_REDBLACKTREE_CPP
