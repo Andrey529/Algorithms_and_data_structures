@@ -5,7 +5,6 @@
 #include "../List/List.h"
 #include "../AssociativeArray/AssociativeArray.h"
 #include "HuffmanTree.h"
-#include "../Stack/Stack.h"
 
 class HuffmanCode {
 private:
@@ -49,5 +48,7 @@ public:
     void clear();
     double getCompressionRatio();
 };
+
+//#include "../../src/HuffmanCode/HuffmanCode.cpp"
 
 #endif //LAB2_HUFFMON_CODING_HUFFMANCODE_H

@@ -63,5 +63,6 @@ public:
     void clear();
 };
 
+//#include "../../src/HuffmanCode/HuffmanTree.cpp"
 
 #endif //LAB2_HUFFMON_CODING_HUFFMANTREE_H

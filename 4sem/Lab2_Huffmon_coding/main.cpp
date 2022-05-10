@@ -8,7 +8,10 @@ int main() {
     std::cin >> string;
 
     HuffmanCode code(string);
+
     std::cout << code.getEncodedString() << std::endl;
+    std::cout << code.getCountBytesByTheEncodedString() << std::endl;
+    std::cout << code.getTable() << std::endl;
 
     std::string newString;
     std::cin >> newString;

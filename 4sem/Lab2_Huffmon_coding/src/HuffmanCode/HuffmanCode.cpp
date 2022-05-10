@@ -1,3 +1,6 @@
+#ifndef LAB2_HUFFMON_CODING_HUFFMANCODE_CPP
+#define LAB2_HUFFMON_CODING_HUFFMANCODE_CPP
+
 #include "../../headers/HuffmanCode/HuffmanCode.h"
 
 std::string &HuffmanCode::getSourceString() {
@@ -173,7 +176,7 @@ void HuffmanCode::decode(std::string &&str, const AssociativeArray<char, List<bo
 
 List<bool> HuffmanCode::strToListBools(const std::string &str) {
     List<bool> list;
-    for (char symbol : str) {
+    for (char symbol: str) {
         if (symbol == '0')
             list.pushBack(false);
         else if (symbol == '1')
@@ -182,3 +185,5 @@ List<bool> HuffmanCode::strToListBools(const std::string &str) {
     }
     return list;
 }
+
+#endif //LAB2_HUFFMON_CODING_HUFFMANCODE_CPP
