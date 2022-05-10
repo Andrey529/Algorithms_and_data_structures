@@ -37,12 +37,17 @@ template<class T_key, class T_value, class comparator>
 AssociativeArray<T_key, T_value, comparator>&
 AssociativeArray<T_key, T_value, comparator>::operator=(const AssociativeArray<T_key, T_value> &other) &{
     try {
+        if (this == &other) {
+            return *this;
+        }
         this->rbTree_->clear();
         this->rbTree_ = std::make_unique<RedBlackTree<T_key, T_value, comparator>>(*other.rbTree_.get());
+        return *this;
     }
     catch (const std::bad_alloc &error) {
         std::cout << error.what();
     }
+    return *this; // ?
 }
 
 template<class T_key, class T_value, class comparator>
@@ -100,7 +105,7 @@ AssociativeArray<T_key, T_value, comparator>::createBftIterator() {
 }
 
 template<class Key, class Value>
-std::ostream &operator<<(std::ostream &out, AssociativeArray<Key, Value> &map) {
+std::ostream &operator<<(std::ostream &out, /*const*/ AssociativeArray<Key, Value> &map) {
     auto it = map.createBftIterator();
     while (it->hasNext()) {
         auto elem = it->next();
