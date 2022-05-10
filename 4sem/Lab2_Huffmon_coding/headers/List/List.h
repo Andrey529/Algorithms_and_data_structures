@@ -14,6 +14,10 @@ private:
         std::shared_ptr<ElemOfList> nextElem_;
         explicit ElemOfList(const T &data) : data_(data), nextElem_(nullptr) { }
         explicit ElemOfList(T &&data) : data_(std::move(data)), nextElem_(nullptr) { }
+
+        bool operator!=(const ElemOfList &other) {
+            return data_ != other.data_;
+        }
     };
     using elemType = std::shared_ptr<ElemOfList>;
     elemType head_;
@@ -52,6 +56,8 @@ public:
     void remove(size_t index); // deleting an element by index
     void clear(); // removing all list elements
 
+    bool operator==(const List<T>& other);
+
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
 
@@ -61,6 +67,28 @@ public:
     class ListIterator;
     ListIterator begin();
     ListIterator end();
+
+    class ListIteratorConst;
+    ListIteratorConst cbegin() const;
+    ListIteratorConst cend() const;
+
+    class ListIteratorConst {
+    private:
+        std::shared_ptr<const ElemOfList> current_;
+
+    public:
+        ListIteratorConst() noexcept : current_ (nullptr) { }
+        explicit ListIteratorConst(std::shared_ptr<const ElemOfList> pNode) noexcept : current_ (pNode) { }
+        explicit ListIteratorConst(const ListIterator &other) : current_ (other.current_) { }
+
+        ListIteratorConst& operator=(const ListIteratorConst &other);
+        ListIteratorConst& operator=(std::shared_ptr<const ElemOfList> pNode);
+
+        ListIteratorConst& operator++();  // Prefix ++ overload
+        const ListIteratorConst operator++(int); // Postfix ++ overload
+        bool operator!=(const ListIteratorConst& iterator);
+        const T& operator*() const;
+    };
 
     class ListIterator {
     private:

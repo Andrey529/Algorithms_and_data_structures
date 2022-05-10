@@ -280,6 +280,20 @@ typename List<T>::ListIterator List<T>::end() {
 }
 
 template<class T>
+typename List<T>::ListIteratorConst List<T>::cbegin() const{
+    if (head_ == nullptr)
+        throw std::logic_error("An Iterator cannot be created because there is no element in the list.");
+    return ListIteratorConst(head_);
+}
+
+template<class T>
+typename List<T>::ListIteratorConst List<T>::cend() const{
+    if (head_ == nullptr)
+        throw std::logic_error("An Iterator cannot be created because there is no element in the list.");
+    return ListIteratorConst(nullptr);
+}
+
+template<class T>
 template<typename Comparator>
 void List<T>::sort(Comparator comparator) {
     if (isEmpty()) return;
@@ -395,12 +409,29 @@ void List<T>::remove(size_t index) {
     prevElem->nextElem_ = prevElem->nextElem_->nextElem_;
 }
 
+template<class T>
+bool List<T>::operator==(const List<T> &other) {
+    if (this->getSize() != other.getSize()) return false;
+
+    ListIteratorConst itThis = this->cbegin();
+    ListIteratorConst itOther = other.cbegin();
+    for (; itThis != this->cend(); ++itThis) {
+        if (*itThis != *itOther) {
+            return false;
+        }
+        ++itOther;
+    }
+    return true;
+}
+
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
     current_ = other.current_;
     return *this;
 }
+
+
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(List::elemType pNode) {
@@ -432,4 +463,42 @@ T &List<T>::ListIterator::operator*() {
     return current_->data_;
 }
 
+template<class T>
+typename List<T>::ListIteratorConst &List<T>::ListIteratorConst::operator=(const List::ListIteratorConst &other) {
+    current_ = other.current_;
+    return *this;
+}
+
+template<class T>
+typename List<T>::ListIteratorConst &List<T>::ListIteratorConst::operator=(std::shared_ptr<const ElemOfList> pNode) {
+    current_ = pNode;
+    return *this;
+}
+
+template<class T>
+typename List<T>::ListIteratorConst &List<T>::ListIteratorConst::operator++() {
+    if (current_)
+        current_ = current_->nextElem_;
+    return *this;
+}
+
+template<class T>
+const typename List<T>::ListIteratorConst List<T>::ListIteratorConst::operator++(int) {
+    ListIterator iterator = *this;
+    ++*this;
+    return iterator;
+}
+
+template<class T>
+bool List<T>::ListIteratorConst::operator!=(const List::ListIteratorConst &iterator) {
+    return current_ != iterator.current_;
+}
+
+template<class T>
+const T &List<T>::ListIteratorConst::operator*() const {
+    return current_->data_;
+}
+
 #endif //LAB2_HUFFMON_CODING_LIST_CPP
+
+
