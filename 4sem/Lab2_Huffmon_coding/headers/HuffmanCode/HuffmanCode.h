@@ -19,6 +19,8 @@ private:
     AssociativeArray<char, size_t> &getSymbolsFrequency();
     void constructingTheEncodedString();
     void constructingTheTable();
+
+    static List<bool> strToListBools(const std::string &str);
 public:
     HuffmanCode() = default;
     explicit HuffmanCode(const std::string &str) : string_(str) {
@@ -34,49 +36,18 @@ public:
         constructingTheEncodedString();
     }
 
-    void encode(const std::string &str) {
-        clear();
-        string_ = str;
-        calculateSymbolsFrequency();
-        huffmanTree_.buildTree(symbolsFrequency_);
-        constructingTheTable();
-        constructingTheEncodedString();
-    }
-
-    void encode(std::string &&str) {
-        clear();
-        string_ = str;
-        calculateSymbolsFrequency();
-        huffmanTree_.buildTree(symbolsFrequency_);
-        constructingTheTable();
-        constructingTheEncodedString();
-    }
-
-    void decode(const std::string &str, const AssociativeArray<char, List<bool>> &table) {
-        clear();
-//        table_ = table;
-        encodedString_ = str;
-
-        size_t index = 0;
-        while (true) {
-
-        }
-    }
-
-    void decode(std::string &&str) {
-
-    }
-
+    void encode(const std::string &str);
+    void encode(std::string &&str);
+    void decode(const std::string &str, const AssociativeArray<char, List<bool>> &table);
+    void decode(std::string &&str, const AssociativeArray<char, List<bool>> &table);
 
     std::string &getSourceString();
     std::string &getEncodedString();
-//    HuffmanTree &getHuffmanTree();
     AssociativeArray<char, List<bool>> &getTable();
     size_t getCountBytesByTheSourceString() const;
     size_t getCountBytesByTheEncodedString() const;
     void clear();
     double getCompressionRatio();
-
 };
 
 #endif //LAB2_HUFFMON_CODING_HUFFMANCODE_H

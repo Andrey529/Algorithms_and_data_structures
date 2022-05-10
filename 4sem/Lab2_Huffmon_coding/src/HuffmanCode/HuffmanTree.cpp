@@ -3,7 +3,7 @@
 void HuffmanTree::buildTree(AssociativeArray<char, size_t> &symbolsFrequency) {
     List<elemType> leafsList;
 
-    auto it = symbolsFrequency.createDftIterator();
+    auto it = symbolsFrequency.createBftIterator();
     while (it->hasNext()) {
         auto symbolWithFrequency = it->next();
         elemType newElem = std::make_shared<ElemOfHuffmanTree>(symbolWithFrequency->getKey(),
@@ -41,7 +41,7 @@ void HuffmanTree::buildTree(AssociativeArray<char, size_t> &symbolsFrequency) {
         }
 
         elemType newElem;
-        newElem = std::make_shared<ElemOfHuffmanTree>('@', leftElem->frequency_ + rightElem->frequency_,
+        newElem = std::make_shared<ElemOfHuffmanTree>('\0', leftElem->frequency_ + rightElem->frequency_,
                                                       TypeElem::SPECIAL, false,
                                                       nullptr, leftElem, rightElem);
         leftElem->parent_ = newElem;

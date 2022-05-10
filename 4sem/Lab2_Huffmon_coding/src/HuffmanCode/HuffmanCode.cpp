@@ -28,13 +28,6 @@ AssociativeArray<char, size_t> &HuffmanCode::getSymbolsFrequency() {
     return symbolsFrequency_;
 }
 
-//HuffmanTree &HuffmanCode::getHuffmanTree() {
-//    if (string_.empty()) {
-//        throw std::logic_error("Source string to encoding is empty.");
-//    }
-//    return huffmanTree_;
-//}
-
 AssociativeArray<char, List<bool>> &HuffmanCode::getTable() {
     if (string_.empty()) {
         throw std::logic_error("Source string to encoding is empty.");
@@ -60,7 +53,8 @@ void HuffmanCode::clear() {
 
 double HuffmanCode::getCompressionRatio() {
     if (!string_.empty() && !encodedString_.empty())
-        return static_cast<double>(this->getCountBytesByTheSourceString()) / static_cast<double>(this->getCountBytesByTheEncodedString());
+        return static_cast<double>(this->getCountBytesByTheSourceString()) /
+               static_cast<double>(this->getCountBytesByTheEncodedString());
     else
         throw std::logic_error("It is impossible to calculate the compression ratio.");
 }
@@ -107,12 +101,84 @@ void HuffmanCode::constructingTheEncodedString() {
 
             newSubStringOfBits.push_back(bit);
         }
-
         encodedString_ += newSubStringOfBits;
-        encodedString_.push_back('-');
     }
 }
 
+void HuffmanCode::encode(const std::string &str) {
+    clear();
+    string_ = str;
+    calculateSymbolsFrequency();
+    huffmanTree_.buildTree(symbolsFrequency_);
+    constructingTheTable();
+    constructingTheEncodedString();
+}
 
+void HuffmanCode::encode(std::string &&str) {
+    clear();
+    string_ = std::move(str);
+    calculateSymbolsFrequency();
+    huffmanTree_.buildTree(symbolsFrequency_);
+    constructingTheTable();
+    constructingTheEncodedString();
+}
 
+void HuffmanCode::decode(const std::string &str, const AssociativeArray<char, List<bool>> &table) {
+    clear();
+    table_ = table;
+    encodedString_ = str;
 
+    size_t index = 0;
+    auto strSize = str.size();
+    std::string subString;
+    while (index != strSize) {
+        subString += str[index];
+        auto it = table_.createBftIterator();
+        while (it->hasNext()) {
+            List<bool> listFromEncodedStr = strToListBools(subString);
+            List<bool> listFromTable = it->next()->getValue();
+            if (listFromEncodedStr == listFromTable) {
+                string_ += it.operator*().getCurrent()->getKey();
+                subString = "";
+            }
+        }
+
+        ++index;
+    }
+}
+
+void HuffmanCode::decode(std::string &&str, const AssociativeArray<char, List<bool>> &table) {
+    clear();
+    table_ = table;
+    encodedString_ = std::move(str);
+
+    size_t index = 0;
+    auto strSize = str.size();
+    std::string subString;
+    while (index != strSize) {
+        subString += str[index];
+        auto it = table_.createBftIterator();
+        while (it->hasNext()) {
+            List<bool> listFromEncodedStr = strToListBools(subString);
+            List<bool> listFromTable = it->next()->getValue();
+            if (listFromEncodedStr == listFromTable) {
+                string_ += it.operator*().getCurrent()->getKey();
+                subString = "";
+            }
+        }
+
+        ++index;
+    }
+}
+
+List<bool> HuffmanCode::strToListBools(const std::string &str) {
+    List<bool> list;
+    for (char symbol : str) {
+        if (symbol == '0')
+            list.pushBack(false);
+        else if (symbol == '1')
+            list.pushBack(true);
+        else throw std::invalid_argument("Input string must have only 0 and 1 characters");
+    }
+    return list;
+}
