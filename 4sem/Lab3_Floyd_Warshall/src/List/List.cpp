@@ -423,6 +423,16 @@ bool List<T>::operator==(const List<T> &other) {
     return true;
 }
 
+template<typename U>
+std::wostream &operator<<(std::wostream &out, const List<U> &list) {
+    int i = 1;
+    for (size_t index = 0; index < list.getSize(); index++) {
+        out << list.at(index);
+        i++;
+    }
+    return out;
+}
+
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {

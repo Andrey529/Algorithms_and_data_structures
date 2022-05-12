@@ -61,6 +61,10 @@ public:
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<
 
+    template<typename U>
+    friend std::wostream& operator<< (std::wostream &out, const List<U> &list); // overloading operator <<
+
+
     template<typename Comparator = std::less<T>>
     void sort(Comparator comparator = std::less<T>());
 
