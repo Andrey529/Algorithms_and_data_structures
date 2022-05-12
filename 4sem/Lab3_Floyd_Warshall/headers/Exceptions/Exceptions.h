@@ -3,8 +3,6 @@
 
 #include <exception>
 
-#include <exception>
-
 class Except: virtual public std::exception {
 
 protected:
