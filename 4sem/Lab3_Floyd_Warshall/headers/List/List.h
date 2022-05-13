@@ -18,6 +18,10 @@ private:
         bool operator!=(const ElemOfList &other) {
             return data_ != other.data_;
         }
+
+        bool operator==(const ElemOfList &other) {
+            return data_ == other.data_;
+        }
     };
     using elemType = std::shared_ptr<ElemOfList>;
     elemType head_;
@@ -55,6 +59,7 @@ public:
 
     void remove(size_t index); // deleting an element by index
     void clear(); // removing all list elements
+    bool contains(const T &data);
 
     bool operator==(const List<T>& other);
 

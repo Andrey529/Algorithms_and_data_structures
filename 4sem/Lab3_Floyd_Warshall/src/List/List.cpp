@@ -433,6 +433,16 @@ std::wostream &operator<<(std::wostream &out, const List<U> &list) {
     return out;
 }
 
+template<class T>
+bool List<T>::contains(const T &data) {
+    auto elem = head_;
+    while (elem != nullptr) {
+        if (elem->data_ == data) return true;
+        elem = elem->nextElem_;
+    }
+    return false;
+}
+
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {
