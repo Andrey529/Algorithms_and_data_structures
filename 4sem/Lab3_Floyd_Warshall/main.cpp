@@ -3,16 +3,15 @@
 #include "headers/Flights/FlightsGraph.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
     FlightsGraph flights;
-    List<Flight> list = flights.getListFlights();
-//    std::wcout << list << std::endl;
-    for (int i = 0; i < list.getSize(); ++i) {
-        auto flight = list.at(i);
-        std::wcout << flight.getDeparture() << ';' << flight.getArrival() << ';'
-            << flight.getFirstFlight() << ';' << flight.getSecondFlight() << std::endl;
-    }
-    std::string str("впasfa");
-    std::cout << str << std::endl;
+    std::wstring city1;
+    std::wstring city2;
+
+    std::cout << "Input first city ";
+    std::wcin >> city1;
+    std::cout << "Input second city ";
+    std::wcin >> city2;
+
+    std::cout << flights.calculatePath(city1,city2) << std::endl;
     return 0;
 }
