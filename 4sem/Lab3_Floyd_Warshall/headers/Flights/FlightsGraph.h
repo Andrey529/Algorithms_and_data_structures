@@ -42,5 +42,6 @@ public:
     int calculatePath(const std::wstring &city1, const std::wstring &city2);
 };
 
+//#include "../../src/Flights/FlightsGraph.cpp"
 
 #endif //LAB3_FLOYD_WARSHALL_FLIGHTSGRAPH_H

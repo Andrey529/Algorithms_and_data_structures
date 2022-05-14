@@ -1,3 +1,6 @@
+#ifndef LAB3_FLOYD_WARSHALL_FLIGHTSGRAPH_CPP
+#define LAB3_FLOYD_WARSHALL_FLIGHTSGRAPH_CPP
+
 #include "../../headers/Flights/FlightsGraph.h"
 
 void FlightsGraph::process() {
@@ -124,4 +127,4 @@ int FlightsGraph::calculatePath(const std::wstring &city1, const std::wstring &c
     throw Exception("No given path", 1);
 }
 
-
+#endif //LAB3_FLOYD_WARSHALL_FLIGHTSGRAPH_CPP
