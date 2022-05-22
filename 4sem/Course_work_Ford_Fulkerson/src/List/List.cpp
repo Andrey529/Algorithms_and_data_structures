@@ -462,6 +462,7 @@ void List<T>::remove(size_t index) {
 
 template<class T>
 bool List<T>::operator==(const List<T> &other) {
+    if (this->isEmpty() && other.isEmpty()) return true;
     if (this->getSize() != other.getSize()) return false;
 
     ListIteratorConst itThis = this->cbegin();
@@ -495,6 +496,15 @@ bool List<T>::contains(const T &data) {
     return false;
 }
 
+template<class T>
+bool List<T>::contains(T &&data) {
+    auto elem = head_;
+    while (elem != nullptr) {
+        if (elem->data_ == data) return true;
+        elem = elem->nextElem_;
+    }
+    return false;
+}
 
 template<class T>
 typename List<T>::ListIterator &List<T>::ListIterator::operator=(const List::ListIterator &other) {

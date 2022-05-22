@@ -3,24 +3,45 @@
 
 #include <fstream>
 
-#include "../List/List.h"
-#include "Edge.h"
 #include "../Exceptions/Exceptions.h"
+#include "Vertex.h"
 
 class Graph {
 private:
     List<Edge> edges_;
+    List<Vertex> vertexes_;
+    Vertex startVertex_;
+    Vertex finishVertex_;
+
+
+    void buildStartGraph();
+    void configListVertexes();
 public:
-    Graph() : edges_() {}
-    explicit Graph(const List<Edge> &edges) : edges_(edges) {}
-    explicit Graph(List<Edge> &&edges) : edges_(std::move(edges)) {}
-    explicit Graph(const std::string &fileWithEdgesPath) : edges_() {
-        parseEdgesFromFile(fileWithEdgesPath);
+    Graph() : startVertex_("S"), finishVertex_("T") {}
+
+    explicit Graph(const List<Edge> &edges, const std::string &startVertex = "S", const std::string &finishVertex = "F")
+            : edges_(edges), startVertex_(startVertex), finishVertex_(finishVertex) {
+        process();
     }
 
-    void parseEdgesFromFile(const std::string &fileWithEdgesPath);
+    explicit Graph(List<Edge> &&edges, const std::string &startVertex = "S", const std::string &finishVertex = "F")
+            : edges_(std::move(edges)), startVertex_(startVertex), finishVertex_(finishVertex) {
+        process();
+    }
+
+    explicit Graph(const std::string &fileWithEdgesPath, const std::string &startVertex = "S",
+                   const std::string &finishVertex = "F")
+            : edges_(), startVertex_(startVertex), finishVertex_(finishVertex) {
+        parseEdgesFromFile(fileWithEdgesPath);
+        process();
+    }
 
     List<Edge> &getEdges() { return edges_; }
+
+    void parseEdgesFromFile(const std::string &fileWithEdgesPath);
+    void clear();
+    void process();
+
 };
 
 #endif //COURSE_WORK_FORD_FULKERSON_GRAPH_H

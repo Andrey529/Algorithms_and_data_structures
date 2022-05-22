@@ -17,8 +17,43 @@ struct Edge {
                                                                               finish_(std::move(finish)),
                                                                               capacity_(capacity) {}
 
+    Edge(const Edge &other) : start_(other.start_), finish_(other.finish_), capacity_(other.capacity_) {}
+    Edge(Edge &&other)  noexcept : start_(std::move(other.start_)), finish_(std::move(other.finish_)), capacity_(other.capacity_) {}
+
+    Edge& operator=(const Edge &other) & {
+        if (this == &other) {
+            return *this;
+        }
+        start_ = other.start_;
+        finish_ = other.finish_;
+        capacity_ = other.capacity_;
+        return *this;
+    }
+    Edge& operator=(Edge &&other) & noexcept {
+        if (this == &other) {
+            return *this;
+        }
+        start_ = std::move(other.start_);
+        finish_ = std::move(other.finish_);
+        capacity_ = other.capacity_;
+        return *this;
+    }
+
+    bool operator==(const Edge& other) const {
+        if (start_ == other.start_ && finish_ == other.finish_ && capacity_ == other.capacity_) {
+            return true;
+        } else return false;
+    }
+
+    bool operator!=(const Edge& other) const {
+        if (start_ != other.start_ && finish_ != other.finish_ && capacity_ != other.capacity_) {
+            return true;
+        } else return false;
+    }
+
     friend std::ostream& operator<< (std::ostream &out, const Edge &edge) {
         out << edge.start_ << ' ' << edge.finish_ << ' ' << edge.capacity_ << std::endl;
+        return out;
     }
 
 };

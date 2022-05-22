@@ -61,6 +61,7 @@ public:
     void remove(size_t index); // deleting an element by index
     void clear(); // removing all list elements
     bool contains(const T &data);
+    bool contains(T &&data);
 
     bool operator==(const List<T>& other);
 

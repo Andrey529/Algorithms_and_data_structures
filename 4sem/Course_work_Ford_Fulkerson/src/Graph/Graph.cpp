@@ -6,6 +6,7 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
     if (f.bad()) {
         throw Exception("Bad file", 1);
     }
+    this->clear();
     char symbol = '\0';
     while (true) {
         int countDelimeters = 0;
@@ -36,3 +37,35 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
 
     f.close();
 }
+
+void Graph::clear() {
+    if (!edges_.isEmpty()) {
+        edges_.clear();
+    }
+}
+
+void Graph::process() {
+    configListVertexes();
+    buildStartGraph();
+}
+
+void Graph::configListVertexes() {
+    for (auto itEdges = edges_.cbegin(); itEdges != edges_.cend(); ++itEdges) {
+        Vertex vertex1(itEdges.operator*().start_);
+        Vertex vertex2(itEdges.operator*().finish_);
+        if (!vertexes_.contains(vertex1)) {
+            vertexes_.pushBack(vertex1);
+        }
+        if (!vertexes_.contains(vertex2)) {
+            vertexes_.pushBack(vertex2);
+        }
+    }
+}
+
+void Graph::buildStartGraph() {
+
+}
+
+
+
+
