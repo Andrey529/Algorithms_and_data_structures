@@ -14,23 +14,37 @@ private:
     Vertex finishVertex_;
 
 
-    void buildStartGraph();
     void configListVertexes();
+    void buildStartGraph();
+    void algorithm();
+
+
+    struct edgesComparator {
+        bool
+        operator()(const Edge &elem1, const Edge &elem2) {
+
+            if (elem1.capacity_ < elem2.capacity_) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
 public:
     Graph() : startVertex_("S"), finishVertex_("T") {}
 
-    explicit Graph(const List<Edge> &edges, const std::string &startVertex = "S", const std::string &finishVertex = "F")
+    explicit Graph(const List<Edge> &edges, const std::string &startVertex = "S", const std::string &finishVertex = "T")
             : edges_(edges), startVertex_(startVertex), finishVertex_(finishVertex) {
         process();
     }
 
-    explicit Graph(List<Edge> &&edges, const std::string &startVertex = "S", const std::string &finishVertex = "F")
+    explicit Graph(List<Edge> &&edges, const std::string &startVertex = "S", const std::string &finishVertex = "T")
             : edges_(std::move(edges)), startVertex_(startVertex), finishVertex_(finishVertex) {
         process();
     }
 
     explicit Graph(const std::string &fileWithEdgesPath, const std::string &startVertex = "S",
-                   const std::string &finishVertex = "F")
+                   const std::string &finishVertex = "T")
             : edges_(), startVertex_(startVertex), finishVertex_(finishVertex) {
         parseEdgesFromFile(fileWithEdgesPath);
         process();
@@ -41,6 +55,8 @@ public:
     void parseEdgesFromFile(const std::string &fileWithEdgesPath);
     void clear();
     void process();
+
+
 
 };
 

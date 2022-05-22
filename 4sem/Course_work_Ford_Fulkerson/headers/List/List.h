@@ -64,6 +64,7 @@ public:
     bool contains(T &&data);
 
     bool operator==(const List<T>& other);
+    bool operator!=(const List<T>& other);
 
     template<typename U>
     friend std::ostream& operator<< (std::ostream &out, const List<U> &list); // overloading operator <<

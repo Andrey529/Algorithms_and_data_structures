@@ -476,6 +476,21 @@ bool List<T>::operator==(const List<T> &other) {
     return true;
 }
 
+template<class T>
+bool List<T>::operator!=(const List<T> &other) {
+    if (this->isEmpty() && other.isEmpty()) return false;
+
+    ListIteratorConst itThis = this->cbegin();
+    ListIteratorConst itOther = other.cbegin();
+    for (; itThis != this->cend(); ++itThis) {
+        if (*itThis == *itOther) {
+            return false;
+        }
+        ++itOther;
+    }
+    return true;
+}
+
 template<typename U>
 std::wostream &operator<<(std::wostream &out, const List<U> &list) {
     int i = 1;

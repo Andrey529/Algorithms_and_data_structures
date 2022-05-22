@@ -9,19 +9,26 @@ struct Vertex {
     std::string name_;
     List<Edge> edgesForward_;
     List<Edge> edgesBack_;
+    List<Vertex> vertexesForward_;
+    List<Vertex> vertexesBack_;
 
     Vertex() = default;
 
     explicit Vertex(const std::string &name) : name_(name) {}
 
-    Vertex(const std::string &name, const List<Edge> &edgesForward, const List<Edge> &edgesBack)
-            : name_(name), edgesForward_(edgesForward), edgesBack_(edgesBack) {}
+    Vertex(const std::string &name, const List<Edge> &edgesForward, const List<Edge> &edgesBack,
+           const List<Vertex> &vertexesForward, const List<Vertex> &vertexesBack)
+            : name_(name), edgesForward_(edgesForward), edgesBack_(edgesBack), vertexesForward_(vertexesForward),
+              vertexesBack_(vertexesBack) {}
 
     Vertex(const Vertex &other) : name_(other.name_), edgesForward_(other.edgesForward_),
-                                  edgesBack_(other.edgesBack_) {}
+                                  edgesBack_(other.edgesBack_), vertexesForward_(other.vertexesForward_),
+                                  vertexesBack_(other.vertexesBack_) {}
 
-    Vertex(Vertex &&other)  noexcept : name_(std::move(other.name_)), edgesForward_(std::move(other.edgesForward_)),
-                             edgesBack_(std::move(other.edgesBack_)) {}
+    Vertex(Vertex &&other) noexcept: name_(std::move(other.name_)), edgesForward_(std::move(other.edgesForward_)),
+                                     edgesBack_(std::move(other.edgesBack_)),
+                                     vertexesForward_(std::move(other.vertexesForward_)),
+                                     vertexesBack_(std::move(other.vertexesBack_)) {}
 
     Vertex &operator=(const Vertex &other) &{
         if (this == &other) {
@@ -30,6 +37,8 @@ struct Vertex {
         name_ = other.name_;
         edgesForward_ = other.edgesForward_;
         edgesBack_ = other.edgesBack_;
+        vertexesForward_ = other.vertexesForward_;
+        vertexesBack_ = other.vertexesBack_;
         return *this;
     }
 
@@ -40,14 +49,30 @@ struct Vertex {
         name_ = std::move(other.name_);
         edgesForward_ = std::move(other.edgesForward_);
         edgesBack_ = std::move(other.edgesBack_);
+        vertexesForward_ = std::move(other.vertexesForward_);
+        vertexesBack_ = std::move(other.vertexesBack_);
         return *this;
     }
 
-    bool operator==(const Vertex& other) {
+    bool operator==(const Vertex &other) {
         if (name_ == other.name_ && edgesForward_ == other.edgesForward_ && edgesBack_ == other.edgesBack_) {
             return true;
         } else return false;
     }
+
+    bool operator!=(const Vertex &other) {
+        if (name_ != other.name_ && edgesForward_ != other.edgesForward_ && edgesBack_ != other.edgesBack_) {
+            return true;
+        } else return false;
+    }
+
+    void clear() {
+        name_ = "";
+        edgesForward_.clear();
+        edgesBack_.clear();
+    }
+
+
 
 };
 
