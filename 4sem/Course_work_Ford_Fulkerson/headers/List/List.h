@@ -33,6 +33,8 @@ public:
     explicit List(T &&data);
     List(const List<T> &other);
     List(List<T> &&other) noexcept ;
+    List &operator=(const List &other) &;
+    List &operator=(List &&other) & noexcept;
     ~List() = default;
 
     bool isEmpty() const; // checking if the list is empty

@@ -60,6 +60,58 @@ List<T>::List(List<T> &&other) noexcept {
 }
 
 template<class T>
+List<T> &List<T>::operator=(const List &other) &{
+    try {
+        if (this == &other) {
+            return *this;
+        }
+
+        if (other.isEmpty()) {
+            head_ = nullptr;
+        } else {
+            head_ = std::make_shared<ElemOfList>(other.head_->data_);
+
+            std::shared_ptr<ElemOfList> tempForNextElem = head_;
+            std::shared_ptr<ElemOfList> otherElem = other.head_->nextElem_;
+
+            while (otherElem != nullptr) {
+                tempForNextElem->nextElem_ = std::make_shared<ElemOfList>(otherElem->data_);
+
+                tempForNextElem = tempForNextElem->nextElem_;
+                otherElem = otherElem->nextElem_;
+            }
+            tempForNextElem->nextElem_ = nullptr;
+        }
+        return *this;
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T>
+List<T> &List<T>::operator=(List &&other) & noexcept{
+    try {
+        if (this == &other) {
+            return *this;
+        }
+
+        if (other.isEmpty()) {
+            head_ = nullptr;
+        } else {
+            clear();
+            head_ = other.head_;
+
+            other.clear();
+        }
+        return *this;
+    }
+    catch (const std::bad_alloc &error) {
+        std::cout << error.what();
+    }
+}
+
+template<class T>
 void List<T>::pushBack(const T &data) {
     try {
         if (this->isEmpty()) {
