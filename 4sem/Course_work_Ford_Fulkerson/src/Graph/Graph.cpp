@@ -10,11 +10,15 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
     while (true) {
         int countDelimeters = 0;
         auto edge = Edge();
+        std::string capacity;
         while (true) {
             symbol = f.get();
 
-            if (f.eof()) break;
-            if (symbol == '\n') break;
+            if (symbol == '\n' || f.eof()) {
+                edge.capacity_ = std::stoi(capacity);
+                edge.flow_ = 0;
+                break;
+            }
             if (symbol == ' ') {
                 ++countDelimeters;
                 continue;
@@ -24,9 +28,7 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
             } else if (countDelimeters == 1) {
                 edge.finish_ = symbol;
             } else {
-                std::string tempStr;
-                tempStr.push_back(symbol);
-                edge.capacity_ = std::stoi(tempStr);
+                capacity.push_back(symbol);
             }
         }
 
@@ -41,7 +43,7 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
 void Graph::process() {
     configListVertexes();
     buildStartGraph();
-//    algorithm();
+    algorithmFordFulkerson();
 }
 
 void Graph::configListVertexes() {
@@ -94,46 +96,87 @@ void Graph::buildStartGraph() {
     }
 }
 
-//void Graph::algorithm() {
-//
-//    while (true) {
-//        List<Edge> wayEdges;
-//        List<Vertex> wayVertexes;
-//        auto currentVertex = startVertex_; // ??
-//        size_t flow = INT64_MAX;
-//        while (currentVertex.name_ != finishVertex_.name_) {
-//            if (currentVertex.edgesForward_.isEmpty()) {
-//                break;
-//            }
-//            if (currentVertex.edgesForward_.at(0).capacity_ < flow) {
-//                flow = currentVertex.edgesForward_.at(0).capacity_;
-//            }
-//            wayEdges.pushBack(currentVertex.edgesForward_.at(0));
-//            wayVertexes.pushBack(currentVertex);
-//            for(auto it = vertexes_.begin(); it != vertexes_.end(); ++it) {
-//                if (it.operator*().name_ == currentVertex.edgesForward_.at(0).finish_) { //?? .at(0).finish_
-//                    currentVertex = *it;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (currentVertex.name_ == finishVertex_.name_) {
-//            for (auto itEdges = edges_.begin(); itEdges != edges_.end(); ++itEdges) {
-//                for (auto itWayEdges = wayEdges.begin(); itWayEdges != wayEdges.end(); ++itWayEdges) {
-//                    if (itEdges.operator*().start_ == itWayEdges.operator*().start_ &&
-//                        itEdges.operator*().finish_ == itWayEdges.operator*().finish_) {
-//                        // ?????????????
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (currentVertex.edgesForward_.isEmpty() && currentVertex == startVertex_) {
-//            break;
-//        }
-//    }
-//}
+
+void Graph::algorithmFordFulkerson() {
+
+    List<std::shared_ptr<Edge>> wayEdges;
+    List<std::shared_ptr<Vertex>> wayVertexes;
+
+    while (true) {
+        wayEdges.clear();
+        wayVertexes.clear();
+        int currentFlow = dfs(startVertex_, INT32_MAX, wayEdges, wayVertexes);
+        if (currentFlow > 0) {
+            maxFlow_ += currentFlow;
+        } else {
+            break;
+        }
+    }
+}
+
+int Graph::dfs(std::shared_ptr<Vertex> vertex, int flow, List<std::shared_ptr<Edge>> wayEdges,
+               List<std::shared_ptr<Vertex>> wayVertexes) {
+    if (wayVertexes.contains(vertex)) {
+        wayEdges.popBack();
+        return 0;
+    }
+    wayVertexes.pushBack(vertex);
+    if (vertex == finishVertex_) {
+        return flow;
+    }
+    for (auto itEdges = vertex->edgesForward_.begin(); itEdges != vertex->edgesForward_.end(); ++itEdges) {
+        if (itEdges.operator*()->flow_ < itEdges.operator*()->capacity_) {
+            for (auto itVertexes = vertexes_.begin(); itVertexes != vertexes_.end(); ++itVertexes) {
+                if (itVertexes.operator*()->name_ == itEdges.operator*()->finish_) {
+                    if (!wayEdges.isEmpty()) {
+                        bool contains = false;
+                        for (auto it = wayEdges.begin(); it != wayEdges.end(); ++it) {
+                            if (it.operator*()->start_ == itEdges.operator*()->finish_ && it.operator*()->finish_ == itEdges.operator*()->start_) {
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (contains) continue;
+                    }
+
+                    wayEdges.pushBack(*itEdges);
+                    flow = dfs(*itVertexes, std::min(flow, itEdges.operator*()->capacity_ - itEdges.operator*()->flow_),
+                               wayEdges, wayVertexes);
+                    if (flow <= 0) {
+                        int size = wayEdges.getSize();
+                        auto edje = wayEdges.at(size-1);
+                        if (edje->start_ == startVertex_->name_ || edje->finish_ == startVertex_->name_) {
+                            flow = INT32_MAX;
+                        }
+                        wayEdges.popBack();
+                    } else if (flow > 0) {
+                        itEdges.operator*()->flow_ += flow;
+                        if (itVertexes.operator*()->edgesForward_.isEmpty()) {
+                            if (*itVertexes == finishVertex_) {
+                                return flow;
+                            } else return 0;
+                        }
+                        for (auto itEdgesForward = itVertexes.operator*()->edgesForward_.begin();
+                             itEdgesForward != itVertexes.operator*()->edgesForward_.end(); ++itEdgesForward) {
+                            if (itEdgesForward.operator*()->start_ == itEdges.operator*()->finish_
+                                && itEdgesForward.operator*()->finish_ == itEdges.operator*()->start_) {
+                                itEdgesForward.operator*()->flow_ += flow;
+                                return flow;
+                            }
+                        }
+                        itVertexes.operator*()->edgesForward_.pushBack(
+                                std::make_shared<Edge>(itEdges.operator*()->finish_, itEdges.operator*()->start_,
+                                                       itEdges.operator*()->capacity_, itEdges.operator*()->capacity_ - flow));
+                        return flow;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 
 
 
