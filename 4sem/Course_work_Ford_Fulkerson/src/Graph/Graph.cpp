@@ -40,7 +40,7 @@ void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
 
 void Graph::process() {
     configListVertexes();
-//    buildStartGraph();
+    buildStartGraph();
 //    algorithm();
 }
 
@@ -71,34 +71,29 @@ void Graph::configListVertexes() {
     }
 }
 
-//void Graph::buildStartGraph() {
-//    for (auto itVertexes = vertexes_.begin(); itVertexes != vertexes_.end(); ++itVertexes) {
-//        for (auto itEdges = edges_.begin(); itEdges != edges_.end(); ++itEdges) {
-//            if (itEdges.operator*().start_ == itVertexes.operator*().name_) {
-//
-//
-//                itVertexes.operator*().edgesForward_.pushBack(itEdges.operator*());
-//
-//
-//
-//                for (auto it = vertexes_.begin(); it != vertexes_.end(); ++it) {
-//                    if (it.operator*().name_ == itEdges.operator*().finish_) {
-//                        itVertexes.operator*().vertexesForward_.pushBack();
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    for (auto it = vertexes_.begin(); it != vertexes_.end(); ++it) {
-//        if (it.operator*().name_ == startVertex_.name_) {
-//            startVertex_ = *it;
-//        } else if (it.operator*().name_ == finishVertex_.name_) {
-//            finishVertex_ = *it;
-//        }
-//    }
-//
-//}
-//
+void Graph::buildStartGraph() {
+    for (auto itVertexes = vertexes_.begin(); itVertexes != vertexes_.end(); ++itVertexes) {
+        for (auto itEdges = edges_.begin(); itEdges != edges_.end(); ++itEdges) {
+            if (itEdges.operator*()->start_ == itVertexes.operator*()->name_) {
+                itVertexes.operator*()->edgesForward_.pushBack(*itEdges);
+                for (auto itVertexes2 = vertexes_.begin(); itVertexes2 != vertexes_.end(); ++itVertexes2) {
+                    if (itVertexes2.operator*()->name_ == itEdges.operator*()->finish_) {
+                        itVertexes.operator*()->vertexesForward_.pushBack(*itVertexes2);
+                    }
+                }
+            }
+        }
+    }
+
+    for (auto it = vertexes_.begin(); it != vertexes_.end(); ++it) {
+        if (it.operator*()->name_ == startVertex_->name_) {
+            startVertex_ = *it;
+        } else if (it.operator*()->name_ == finishVertex_->name_) {
+            finishVertex_ = *it;
+        }
+    }
+}
+
 //void Graph::algorithm() {
 //
 //    while (true) {
