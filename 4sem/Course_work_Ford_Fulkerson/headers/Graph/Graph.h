@@ -8,54 +8,31 @@
 
 class Graph {
 private:
-    List<Edge> edges_;
-    List<Vertex> vertexes_;
-    Vertex startVertex_;
-    Vertex finishVertex_;
+    List<std::shared_ptr<Edge>> edges_;
+    List<std::shared_ptr<Vertex>> vertexes_;
+    std::shared_ptr<Vertex> startVertex_;
+    std::shared_ptr<Vertex> finishVertex_;
 
+    void process();
 
+    void parseEdgesFromFile(const std::string &fileWithEdgesPath);
     void configListVertexes();
     void buildStartGraph();
     void algorithm();
 
-
-    struct edgesComparator {
-        bool
-        operator()(const Edge &elem1, const Edge &elem2) {
-
-            if (elem1.capacity_ < elem2.capacity_) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    };
 public:
-    Graph() : startVertex_("S"), finishVertex_("T") {}
-
-    explicit Graph(const List<Edge> &edges, const std::string &startVertex = "S", const std::string &finishVertex = "T")
-            : edges_(edges), startVertex_(startVertex), finishVertex_(finishVertex) {
-        process();
-    }
-
-    explicit Graph(List<Edge> &&edges, const std::string &startVertex = "S", const std::string &finishVertex = "T")
-            : edges_(std::move(edges)), startVertex_(startVertex), finishVertex_(finishVertex) {
-        process();
-    }
+    Graph() = delete;
+    ~Graph() = default;
 
     explicit Graph(const std::string &fileWithEdgesPath, const std::string &startVertex = "S",
                    const std::string &finishVertex = "T")
-            : edges_(), startVertex_(startVertex), finishVertex_(finishVertex) {
+            : edges_(), startVertex_(std::make_shared<Vertex>(startVertex)),
+              finishVertex_(std::make_shared<Vertex>(finishVertex)) {
         parseEdgesFromFile(fileWithEdgesPath);
         process();
     }
 
-    List<Edge> &getEdges() { return edges_; }
-
-    void parseEdgesFromFile(const std::string &fileWithEdgesPath);
-    void clear();
-    void process();
-
+    List<std::shared_ptr<Edge>> &getEdges() { return edges_; }
 
 
 };

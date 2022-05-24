@@ -9,6 +9,7 @@ struct Edge {
     size_t capacity_;
 
     Edge() : start_(), finish_(), capacity_{} {}
+    ~Edge() = default;
     Edge(const std::string &start, const std::string &finish, const size_t &capacity) : start_(start),
                                                                                         finish_(finish),
                                                                                         capacity_(capacity) {}
