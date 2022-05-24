@@ -15,7 +15,6 @@ private:
     int maxFlow_;
 
     void process();
-
     void parseEdgesFromFile(const std::string &fileWithEdgesPath);
     void configListVertexes();
     void buildStartGraph();
@@ -38,5 +37,8 @@ public:
     int getMaxFlow() { return maxFlow_; }
 
 };
+
+//#include "../../src/Graph/Graph.cpp"
+
 
 #endif //COURSE_WORK_FORD_FULKERSON_GRAPH_H

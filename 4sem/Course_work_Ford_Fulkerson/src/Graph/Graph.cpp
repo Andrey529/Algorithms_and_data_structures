@@ -1,3 +1,6 @@
+#ifndef COURSE_WORK_FORD_FULKERSON_GRAPH_CPP
+#define COURSE_WORK_FORD_FULKERSON_GRAPH_CPP
+
 #include "../../headers/Graph/Graph.h"
 
 void Graph::parseEdgesFromFile(const std::string &fileWithEdgesPath) {
@@ -177,7 +180,4 @@ int Graph::dfs(std::shared_ptr<Vertex> vertex, int flow, List<std::shared_ptr<Ed
     return 0;
 }
 
-
-
-
-
+#endif //COURSE_WORK_FORD_FULKERSON_GRAPH_CPP
